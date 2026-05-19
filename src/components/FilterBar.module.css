@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 6px 16px;
+  border-radius: 99px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #8B8B8B;
+  transform: scale(1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.active {
+  background: #E8E6E1;
+  color: #0D0D0F;
+  transform: scale(1.05);
+}

@@ -1,0 +1,32 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: #15151A;
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: default;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.cardLabel {
+  font-size: 11px;
+  color: #8B8B8B;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.cardValue {
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}

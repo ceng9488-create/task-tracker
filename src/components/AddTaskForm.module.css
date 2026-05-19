@@ -1,0 +1,63 @@
+.form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.textInput {
+  flex: 1;
+  min-width: 180px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2A2A30;
+  background: #15151A;
+  color: #E8E6E1;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.textInput::placeholder {
+  color: #6B6B6B;
+}
+
+.textInput:focus {
+  border-color: #1D9E75;
+}
+
+.select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #2A2A30;
+  background: #15151A;
+  color: #E8E6E1;
+  font-size: 13px;
+  outline: none;
+}
+
+.select option {
+  background: #15151A;
+  color: #E8E6E1;
+}
+
+.addButton {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #1D9E75;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.addButton:hover {
+  background: #17875F;
+  transform: scale(1.03);
+}
+
+.addButton:active {
+  transform: scale(0.97);
+}

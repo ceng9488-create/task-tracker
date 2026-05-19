@@ -1,0 +1,10 @@
+.list {
+  position: relative;
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #7A7A7A;
+  font-size: 14px;
+}

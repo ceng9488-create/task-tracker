@@ -1,0 +1,18 @@
+.summary {
+  background: #2a2a2a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: #ffff;
+  line-height: 1.6;
+  
+}
+
+.allDone {
+  color: #1D9E75;
+  font-weight: 500;
+}
+
+.high   { color: #E24B4A; font-weight: 600; }
+.medium { color: #F5A623; font-weight: 600; }
+.low    { color: #8B8B8B; font-weight: 600; }
