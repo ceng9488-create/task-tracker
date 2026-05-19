@@ -8,7 +8,7 @@ interface Props {
   // edit state
   isEditing: boolean;
   editText: string;
-  editRef: RefObject<HTMLInputElement>;
+  editRef: RefObject<HTMLInputElement | null>;
   onEditStart: (task: Task) => void;
   onEditConfirm: () => void;
   onEditTextChange: (value: string) => void;

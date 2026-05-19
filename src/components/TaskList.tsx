@@ -6,12 +6,12 @@ import styles from "./TaskList.module.css";
 interface Props {
   visible: Task[];
   activeFilter: Filter;
-  listRef: RefObject<HTMLDivElement>;
+  listRef: RefObject<HTMLDivElement | null>;
 
   // edit state
   editId: number | null;
   editText: string;
-  editRef: RefObject<HTMLInputElement>;
+  editRef: RefObject<HTMLInputElement | null>;
   onEditStart: (task: Task) => void;
   onEditConfirm: () => void;
   onEditTextChange: (value: string) => void;

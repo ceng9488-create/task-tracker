@@ -1,6 +1,6 @@
 import "./App.css";
 import { useTaskManager } from "./hooks/useTaskManager";
-import { ProgressBar } from "./components/ProgressBar";
+//import { ProgressBar } from "./components/ProgressBar";
 import { StatsGrid } from "./components/StatsGrid";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { FilterBar } from "./components/FilterBar";
