@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
 
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -32,6 +33,52 @@
   }
 }
 
+:root[data-theme="dark"] {
+  --bg-app:         #0D0D0F;
+  --bg-card:        #15151a;
+  --bg-card-hover:  #1E1E26;
+  --bg-input:       #15151a;
+  --bg-hint-key:    #1E1E24;
+
+  --text-primary:   #F0EFED;
+  --text-secondary: #8b8b8b;
+  --text-muted:     #6b6b6b;
+  --text-faint:     #5a5a5a;
+
+  --border:         #2a2a30;
+  --border-focus:   #1d9e75;
+
+ --accent:          #1D9E75;
+  --accent-hover:   #17875F;
+
+  --priority-high:   #E24B4A;
+  --priority-medium: #F5A623;
+  --priority-low:    #8B8B8B;
+}
+
+:root[data-theme="light"] {
+  --bg-app:         #F5F5F7;
+  --bg-card:        #FFFFFF;
+  --bg-card-hover:  #EFEFEF;
+  --bg-input:       #FFFFFF;
+  --bg-hint-key:    #E8E8ED;
+
+  --text-primary:   #1A1A1A;
+  --text-secondary: #555555;
+  --text-muted:     #777777;
+  --text-faint:     #999999;
+
+  --border:         #DDDDE0;
+  --border-focus:   #1D9E75;
+
+  --accent:         #1D9E75;
+  --accent-hover:   #17875F;
+
+  --priority-high:   #E24B4A;
+  --priority-medium: #E08A00;
+  --priority-low:    #888888;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;
@@ -54,7 +101,7 @@
 
 #root {
   min-height: 100svh;
-  background: #0D0D0F;
+  background: var(--bg-app);
 }
 
 input::placeholder { color: #555; }

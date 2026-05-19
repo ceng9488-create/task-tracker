@@ -6,7 +6,7 @@
 }
 
 .card {
-  background: #15151A;
+  background: var(--bg-card);
   border-radius: 10px;
   padding: 14px 16px;
   cursor: default;
@@ -19,7 +19,7 @@
 
 .cardLabel {
   font-size: 11px;
-  color: #8B8B8B;
+  color: var(--text-secondary);
   margin-bottom: 2px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -28,5 +28,5 @@
 .cardValue {
   font-size: 22px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
 }

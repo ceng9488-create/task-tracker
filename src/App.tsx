@@ -7,6 +7,7 @@ import { FilterBar } from "./components/FilterBar";
 import { TaskList } from "./components/TaskList";
 import { DailySummary } from "./components/DailySummary";
 import styles from "./App.module.css";
+import { useTheme } from "./context/ThemeContext";
 
 function App() {
   const {
@@ -49,13 +50,20 @@ function App() {
     onDragEnd,
   } = useTaskManager();
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className={styles.app}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Task tracker</h1>
-        <p className={styles.subtitle}>
-          Drag to reorder · Double-click to edit · Stay productive
-        </p>
+        <div>
+          <h1 className={styles.title}>Task tracker</h1>
+          <p className={styles.subtitle}>
+            Drag to reorder · Double-click to edit · Stay productive
+          </p>
+        </div>
+        <button onClick={toggleTheme} className={styles.themeToggle}>
+          {theme === "light" ? "☀ Light" : "☾ Dark"}
+        </button>
       </div>
 
       {/* <ProgressBar percentage={pct} /> */}

@@ -14,7 +14,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: #15151A;
+  background: var(--bg-card);
   border-radius: 10px;
   margin-bottom: 8px;
   cursor: grab;
@@ -28,13 +28,15 @@
 .container.isDragging   { opacity: 0.4; }
 .container.done         { opacity: 0.45; }
 .container.isRemoving   { opacity: 0; transform: translateX(40px); }
-.container.isDragOver   { background: #1E1E26; transform: scale(1.02); border-left: 3px solid #1D9E75; }
+.container.isDragOver   { 
+  background: var(--bg-card-hover); 
+  transform: scale(1.02); border-left: 3px solid var(--accent); }
 .container.isJustCompleted { transform: scale(1.03); }
 .container.isJustAdded  { animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
 /* ── Drag handle ───────────────────────────────────────── */
 .dragHandle {
-  color: #5A5A5A;
+  color: var(--text-faint);
   font-size: 14px;
   cursor: grab;
   user-select: none;
@@ -49,7 +51,7 @@
   border-radius: 50%;
   flex-shrink: 0;
   cursor: pointer;
-  border: 2px solid #3A3A42;
+  border: 2px solid var(--border);
   background: transparent;
   display: flex;
   align-items: center;
@@ -58,7 +60,7 @@
   transform: scale(1);
 }
 
-.checkbox.done      { background: #1D9E75; border: none; }
+.checkbox.done      { background: var(--accent); border: none; }
 .checkbox.completing { transform: scale(1.3); }
 
 .checkmark {
@@ -73,33 +75,33 @@
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  background: #555;
+  background: var(--priority-low);
 }
 
-.priorityDot.high   { background: #E24B4A; }
-.priorityDot.medium { background: #F5A623; }
+.priorityDot.high   { background: var(--priority-high); }
+.priorityDot.medium { background: var(--priority-medium); }
 .priorityDot.pulse  { animation: pulse 2s infinite; }
 
 /* ── Task text ─────────────────────────────────────────── */
 .taskText {
   flex: 1;
   font-size: 15px;
-  color: #E8E6E1;
+  color: var(--text-primary);
   cursor: text;
   transition: color 0.2s;
 }
 
-.taskText.done { text-decoration: line-through; color: #6B6B6B; }
+.taskText.done { text-decoration: line-through; color: var(--text-muted); }
 
 /* ── Edit input ────────────────────────────────────────── */
 .editInput {
   flex: 1;
   font-size: 15px;
-  background: #1A1A22;
-  border: 1px solid #1D9E75;
+  background: var(--bg-input);
+  border: 1px solid var(--border-focus);
   border-radius: 6px;
   padding: 4px 8px;
-  color: #E8E6E1;
+  color: var(--text-primary);
   outline: none;
 }
 
@@ -110,8 +112,8 @@
   border-radius: 6px;
   white-space: nowrap;
   font-weight: 500;
-  background: #1E1E2E;
-  color: #C0C0C0;
+  background: var(--bg-card-hover);
+  color: var(--text-secondary);
 }
 
 /* ── Remove button ─────────────────────────────────────── */
@@ -119,7 +121,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #5A5A5A;
+  color: var(--text-faint);
   font-size: 16px;
   padding: 4px 6px;
   line-height: 1;
@@ -128,7 +130,7 @@
 }
 
 .removeButton:hover {
-  color: #E24B4A;
+  color: var(--priority-high);
   background: #E24B4A18;
   transform: scale(1.15);
 }
