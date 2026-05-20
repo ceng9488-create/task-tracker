@@ -66,3 +66,63 @@
   background: var(--bg-card);
   color: var(--text-primary);
 }
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userEmail {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.signOutButton {
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signOutButton:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.loginPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+  background: var(--bg-app);
+}
+
+.googleButton {
+  padding: 10px 24px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.googleButton:hover {
+  opacity: 0.8;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: var(--text-secondary);
+  background: var(--bg-app);
+}

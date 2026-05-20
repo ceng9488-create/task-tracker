@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
+
 import type { Task } from "../types/task";
 
-export function useTaskEdit(setTasks: Dispatch<SetStateAction<Task[]>>) {
+export function useTaskEdit(onConfirm: (id:number, text: string) => void) {
     const [editId, setEditId] = useState<number | null>(null);
     const [editText, setEditText] = useState("");
     const editRef = useRef<HTMLInputElement>(null);
@@ -18,15 +18,11 @@ export function useTaskEdit(setTasks: Dispatch<SetStateAction<Task[]>>) {
       },[]);
     
       const confirmEdit = useCallback(() => {
-        if (editText.trim())
-          setTasks((previousTasks) =>
-            previousTasks.map((task) =>
-              task.id === editId ? { ...task, text: editText.trim() } : task,
-            ),
-          );
+        if (editText.trim() && editId !== null)
+          onConfirm(editId, editText.trim());
         setEditId(null);
         setEditText("");
-      }, [editText, editId, setTasks]);
+      }, [editText, editId, onConfirm]);
 
       const cancelEdit = useCallback(() => {
         setEditId(null);

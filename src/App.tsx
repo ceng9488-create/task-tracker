@@ -8,8 +8,26 @@ import { TaskList } from "./components/TaskList";
 import { DailySummary } from "./components/DailySummary";
 import styles from "./App.module.css";
 import { useTheme } from "./context/ThemeContext";
+import { useAuth } from "./context/AuthContext";
 
-function App() {
+
+function LoginPage() {
+  const { signInWithGoogle } = useAuth();
+  return (
+    <div className={styles.loginPage}>
+      <h1 className={styles.title}>Task tracker</h1>
+      <p className={styles.subtitle}>Sign in to access your tasks</p>
+      <button onClick={signInWithGoogle} className={styles.googleButton}>
+        Sign in with Google
+      </button>
+    </div>
+  );
+}
+
+function TaskTrackerApp() {
+  const { theme, toggleTheme } = useTheme();
+  const { signOut, session } = useAuth();
+
   const {
     tasks,
     visible,
@@ -50,9 +68,6 @@ function App() {
     onDragEnd,
   } = useTaskManager();
 
-  
-
-  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className={styles.app}>
@@ -67,8 +82,6 @@ function App() {
           {theme === "light" ? "☀ Light" : "☾ Dark"}
         </button>
       </div>
-
-      {/* <ProgressBar percentage={pct} /> */}
 
       <DailySummary
         highPriorityCount={highPriorityCount}
@@ -131,6 +144,12 @@ function App() {
       )}
     </div>
   );
+}
+function App() {
+  const { session, loading } = useAuth();
+  if (loading) return <div className={styles.loading}>Loading...</div>;
+  if (!session) return <LoginPage />;
+  return <TaskTrackerApp />;
 }
 
 export default App;

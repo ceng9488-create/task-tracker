@@ -1,13 +1,11 @@
 import {
   useCallback,
   useState,
-  type Dispatch,
-  type SetStateAction,
   type DragEvent,
 } from "react";
 import type { Task } from "../types/task";
 
-export function useDragAndDrop(setTasks: Dispatch<SetStateAction<Task[]>>) {
+export function useDragAndDrop(tasks: Task[], onReorder: (newTasks: Task[]) => void) {
   const [dragId, setDragId] = useState<number | null>(null);
   const [dragOverId, setDragOverId] = useState<number | null>(null);
 
@@ -35,18 +33,17 @@ export function useDragAndDrop(setTasks: Dispatch<SetStateAction<Task[]>>) {
         setDragOverId(null);
         return;
       }
-      setTasks((previousTasks) => {
-        const reorderedTasks = [...previousTasks];
+        const reorderedTasks = [...tasks];
         const fromIdx = reorderedTasks.findIndex((task) => task.id === dragId);
         const toIdx = reorderedTasks.findIndex((task) => task.id === targetId);
         const [moved] = reorderedTasks.splice(fromIdx, 1);
         reorderedTasks.splice(toIdx, 0, moved);
-        return reorderedTasks;
-      });
+        onReorder(reorderedTasks);
+    
       setDragId(null);
       setDragOverId(null);
     },
-    [dragId],
+    [dragId, tasks, onReorder]
   );
 
   const onDragEnd = useCallback(() => {

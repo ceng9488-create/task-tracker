@@ -8,4 +8,5 @@ export interface Task {
   priority: Priority;
   category: Category;
   isDone: boolean;
+  position: number;
 }

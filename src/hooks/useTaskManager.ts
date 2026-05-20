@@ -12,11 +12,12 @@ export function useTaskManager() {
   const listRef = useRef<HTMLDivElement>(null);
 
   const {
-    tasks, setTasks, visible,
+    tasks, visible,
     justCompleted, removing, justAdded,
     total, doneCount, remaining, pct,
     highPriorityCount, mediumPriorityCount, lowPriorityCount,
     addTask: addTaskToList, toggleTask, removeTask,
+    updateTaskText, reorderedTasks
   } = useTasks(filter);
 
   const addTask = useCallback(() => {
@@ -29,12 +30,12 @@ export function useTaskManager() {
     editId, editText, editRef,
     setEditId, setEditText,
     startEdit, confirmEdit, cancelEdit,
-  } = useTaskEdit(setTasks);
+  } = useTaskEdit(updateTaskText);
 
   const {
     dragId, dragOverId,
     onDragStart, onDragOver, onDrop, onDragEnd,
-  } = useDragAndDrop(setTasks);
+  } = useDragAndDrop(tasks, reorderedTasks);
 
   return {
     tasks, visible, filter,
