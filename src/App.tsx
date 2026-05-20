@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState } from "react";
 import { useTaskManager } from "./hooks/useTaskManager";
 import { StatsGrid } from "./components/StatsGrid";
 import { AddTaskForm } from "./components/AddTaskForm";
@@ -11,14 +12,76 @@ import { useAuth } from "./context/AuthContext";
 
 
 function LoginPage() {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: { preventDefault: () => void }) {
+    e.preventDefault();
+    setError(null);
+    setMessage(null);
+    setLoading(true);
+    if (mode === "signin") {
+      const err = await signInWithEmail(email, password);
+      if (err) setError(err);
+    } else {
+      const err = await signUpWithEmail(email, password);
+      if (err) setError(err);
+      else setMessage("Check your email to confirm your account.");
+    }
+    setLoading(false);
+  }
+
   return (
     <div className={styles.loginPage}>
       <h1 className={styles.title}>Task tracker</h1>
-      <p className={styles.subtitle}>Sign in to access your tasks</p>
+      <p className={styles.subtitle}>
+        {mode === "signin" ? "Sign in to your account" : "Create a new account"}
+      </p>
+
+      <form onSubmit={handleSubmit} className={styles.authForm}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={styles.authInput}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={styles.authInput}
+          required
+        />
+        {error && <p className={styles.authError}>{error}</p>}
+        {message && <p className={styles.authMessage}>{message}</p>}
+        <button type="submit" className={styles.authButton} disabled={loading}>
+          {loading ? "..." : mode === "signin" ? "Sign in" : "Sign up"}
+        </button>
+      </form>
+
+      <div className={styles.authDivider}><span>or</span></div>
+
       <button onClick={signInWithGoogle} className={styles.googleButton}>
-        Sign in with Google
+        Continue with Google
       </button>
+
+      <p className={styles.authSwitch}>
+        {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}
+        <button
+          className={styles.authSwitchLink}
+          onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); setMessage(null); }}
+        >
+          {mode === "signin" ? "Sign up" : "Sign in"}
+        </button>
+      </p>
     </div>
   );
 }

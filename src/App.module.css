@@ -106,23 +106,115 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  gap: 16px;
+  gap: 12px;
   background: var(--bg-app);
 }
 
-.googleButton {
-  padding: 10px 24px;
-  border-radius: 99px;
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.authInput {
+  padding: 10px 14px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--bg-card);
   color: var(--text-primary);
-  font-size: 15px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.authInput:focus {
+  border-color: var(--border-focus);
+}
+
+.authButton {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.authButton:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.authButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.authError {
+  font-size: 13px;
+  color: var(--priority-high);
+  margin: 0;
+}
+
+.authMessage {
+  font-size: 13px;
+  color: var(--accent);
+  margin: 0;
+}
+
+.authDivider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.authDivider::before,
+.authDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.googleButton {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .googleButton:hover {
-  opacity: 0.8;
+  background: var(--bg-card-hover);
+}
+
+.authSwitch {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.authSwitchLink {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
 }
 
 .loading {

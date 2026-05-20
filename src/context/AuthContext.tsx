@@ -6,8 +6,9 @@ interface AuthContextValue {
     session: Session | null;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
+    signInWithEmail: (email: string, password: string) => Promise<string | null>;
+    signUpWithEmail: (email: string, password: string) => Promise<string | null>;
     signOut:() => Promise<void>;
-
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -37,13 +38,22 @@ export function AuthProvider({ children } : {children: ReactNode }) {
         })
     }
 
+    async function signInWithEmail(email: string, password: string): Promise<string | null> {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        return error ? error.message : null;
+    }
+
+    async function signUpWithEmail(email: string, password: string): Promise<string | null> {
+        const { error } = await supabase.auth.signUp({ email, password });
+        return error ? error.message : null;
+    }
+
     async function signOut() {
         await supabase.auth.signOut();
-        
     }
 
     return (
-        <AuthContext.Provider value={{ session, loading, signInWithGoogle, signOut}}>
+        <AuthContext.Provider value={{ session, loading, signInWithGoogle, signInWithEmail, signUpWithEmail, signOut }}>
             {children}
         </AuthContext.Provider>
     )
