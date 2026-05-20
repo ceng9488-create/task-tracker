@@ -1,18 +1,25 @@
-.app {
-  font-family: 'DM Sans', 'Segoe UI', sans-serif;
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+.layout {
+  display: flex;
   min-height: 100vh;
   background: var(--bg-app);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  width: 100%;
+  max-width: 680px;
+  padding: 2rem 1.5rem;
   color: var(--text-primary);
   text-align: left;
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-bottom: 2rem;
 }
 

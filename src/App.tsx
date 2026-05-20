@@ -1,13 +1,12 @@
 import "./App.css";
 import { useTaskManager } from "./hooks/useTaskManager";
-//import { ProgressBar } from "./components/ProgressBar";
 import { StatsGrid } from "./components/StatsGrid";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { FilterBar } from "./components/FilterBar";
 import { TaskList } from "./components/TaskList";
 import { DailySummary } from "./components/DailySummary";
+import { Sidebar } from "./components/Sidebar";
 import styles from "./App.module.css";
-import { useTheme } from "./context/ThemeContext";
 import { useAuth } from "./context/AuthContext";
 
 
@@ -25,9 +24,6 @@ function LoginPage() {
 }
 
 function TaskTrackerApp() {
-  const { theme, toggleTheme } = useTheme();
-  const { signOut, session } = useAuth();
-
   const {
     tasks,
     visible,
@@ -72,15 +68,9 @@ function TaskTrackerApp() {
   return (
     <div className={styles.app}>
       <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Task tracker</h1>
-          <p className={styles.subtitle}>
-            Drag to reorder · Double-click to edit · Stay productive
-          </p>
-        </div>
-        <button onClick={toggleTheme} className={styles.themeToggle}>
-          {theme === "light" ? "☀ Light" : "☾ Dark"}
-        </button>
+        <p className={styles.subtitle}>
+          Drag to reorder · Double-click to edit · Stay productive
+        </p>
       </div>
 
       <DailySummary
@@ -149,7 +139,14 @@ function App() {
   const { session, loading } = useAuth();
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (!session) return <LoginPage />;
-  return <TaskTrackerApp />;
+  return (
+    <div className={styles.layout}>
+      <Sidebar />
+      <div className={styles.main}>
+        <TaskTrackerApp />
+      </div>
+    </div>
+  );
 }
 
 export default App;

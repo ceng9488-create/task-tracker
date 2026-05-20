@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ANIMATION_DURATION_MS, INITIAL_TASKS } from "../const/task";
+import { ANIMATION_DURATION_MS } from "../const/task";
 import type { Category, Filter, Priority, Task } from "../types/task";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
@@ -18,13 +18,14 @@ function rowToTask(row: Record<string, unknown>):Task {
 export function useTasks(filter: Filter) {
   const { session } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [justCompleted, setJustCompleted] = useState<number | null>(null);
   const [removing, setRemoving] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState<number | null>(null);
 
   useEffect(() => {
     if(!session) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTasks([]);
       setLoading(false);
       return;
