@@ -54,6 +54,7 @@ export function TaskItem({
 
   return (
     <div
+      data-testid={`task-item-${task.id}`}
       draggable={!isEditing}
       onDragStart={(event) => onDragStart(event, task.id)}
       onDragOver={(event) => onDragOver(event, task.id)}
@@ -64,6 +65,7 @@ export function TaskItem({
       <div className={styles.dragHandle}>⠿</div>
 
       <div
+        data-testid={`toggle-task-btn-${task.id}`}
         onClick={() => onToggle(task.id)}
         className={[
           styles.checkbox,
@@ -108,6 +110,7 @@ export function TaskItem({
       <span className={styles.categoryBadge}>{task.category}</span>
 
       <button
+        data-testid={`remove-task-btn-${task.id}`}
         onClick={() => onRemove(task.id)}
         className={styles.removeButton}
       >

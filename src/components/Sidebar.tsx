@@ -27,10 +27,10 @@ export function Sidebar() {
             {session.user.email}
           </p>
         )}
-        <button onClick={toggleTheme} className={styles.iconButton}>
+        <button data-testid="theme-toggle-btn" onClick={toggleTheme} className={styles.iconButton}>
           {theme === "light" ? "☀ Light" : "☾ Dark"}
         </button>
-        <button onClick={signOut} className={styles.signOutButton}>
+        <button data-testid="signout-btn" onClick={signOut} className={styles.signOutButton}>
           Sign out
         </button>
       </div>

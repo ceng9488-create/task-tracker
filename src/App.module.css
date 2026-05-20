@@ -38,6 +38,42 @@
   margin: 0;
 }
 
+.dateDisplay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+
+.dateGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateSeparator {
+  width: 1px;
+  height: 52px;
+  background-color: var(--text-secondary);
+  opacity: 0.3;
+}
+
+.dateDay {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.dateMonth {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
 .hint {
   text-align: center;
   margin-top: 1.5rem;

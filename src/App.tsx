@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTaskManager } from "./hooks/useTaskManager";
 import { StatsGrid } from "./components/StatsGrid";
 import { AddTaskForm } from "./components/AddTaskForm";
@@ -46,6 +46,7 @@ function LoginPage() {
       <form onSubmit={handleSubmit} className={styles.authForm}>
         <input
           type="email"
+          data-testid="email-input"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -54,6 +55,7 @@ function LoginPage() {
         />
         <input
           type="password"
+          data-testid="password-input"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -62,20 +64,21 @@ function LoginPage() {
         />
         {error && <p className={styles.authError}>{error}</p>}
         {message && <p className={styles.authMessage}>{message}</p>}
-        <button type="submit" className={styles.authButton} disabled={loading}>
+        <button type="submit" data-testid="auth-submit-btn" className={styles.authButton} disabled={loading}>
           {loading ? "..." : mode === "signin" ? "Sign in" : "Sign up"}
         </button>
       </form>
 
       <div className={styles.authDivider}><span>or</span></div>
 
-      <button onClick={signInWithGoogle} className={styles.googleButton}>
+      <button onClick={signInWithGoogle} data-testid="google-signin-btn" className={styles.googleButton}>
         Continue with Google
       </button>
 
       <p className={styles.authSwitch}>
         {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}
         <button
+          data-testid="auth-mode-toggle-btn"
           className={styles.authSwitchLink}
           onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setError(null); setMessage(null); }}
         >
@@ -127,13 +130,32 @@ function TaskTrackerApp() {
     onDragEnd,
   } = useTaskManager();
 
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const day = now.getDate();
+  const ordinal = (() => { const s = ["th","st","nd","rd"]; const v = day % 100; return day + (s[(v-20)%10] || s[v] || s[0]); })();
+  const month = now.toLocaleDateString("en-US", { month: "long" });
+  const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
+  const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
 
   return (
     <div className={styles.app}>
       <div className={styles.header}>
-        <p className={styles.subtitle}>
-          Drag to reorder · Double-click to edit · Stay productive
-        </p>
+        <div className={styles.dateDisplay}>
+          <div className={styles.dateGroup}>
+            <span className={styles.dateDay}>{ordinal}</span>
+            <span className={styles.dateMonth}>{month}</span>
+          </div>
+          <div className={styles.dateSeparator} />
+          <div className={styles.dateGroup}>
+            <span className={styles.dateDay}>{weekday}</span>
+            <span className={styles.dateMonth}>{time}</span>
+          </div>
+        </div>
       </div>
 
       <DailySummary

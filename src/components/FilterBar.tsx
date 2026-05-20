@@ -14,6 +14,7 @@ export function FilterBar({ activeFilter, onFilterChange }: Props): ReactElement
       {FILTER_OPTIONS.map((filterOption) => (
         <button
           key={filterOption}
+          data-testid={`filter-btn-${filterOption.toLowerCase()}`}
           onClick={() => onFilterChange(filterOption)}
           className={`${styles.button} ${activeFilter === filterOption ? styles.active : ""}`}
         >

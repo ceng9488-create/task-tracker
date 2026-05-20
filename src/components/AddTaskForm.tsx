@@ -22,6 +22,7 @@ export function AddTaskForm({
     <div className={styles.form}>
       <input
         type="text"
+        data-testid="task-input"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && addTask()}
@@ -29,6 +30,7 @@ export function AddTaskForm({
         className={styles.textInput}
       />
       <select
+        data-testid="priority-select"
         value={selectedPriority}
         onChange={(e) => setSelectedPriority(e.target.value as Priority)}
         className={styles.select}
@@ -38,6 +40,7 @@ export function AddTaskForm({
         ))}
       </select>
       <select
+        data-testid="category-select"
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value as Category)}
         className={styles.select}
@@ -46,7 +49,7 @@ export function AddTaskForm({
           <option key={category} value={category}>{category}</option>
         ))}
       </select>
-      <button onClick={addTask} className={styles.addButton}>
+      <button data-testid="add-task-btn" onClick={addTask} className={styles.addButton}>
         + Add
       </button>
     </div>
