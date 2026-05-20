@@ -1,4 +1,4 @@
-import type { ReactElement, RefObject, MouseEvent, DragEvent } from "react";
+import type { ReactElement, RefObject, DragEvent } from "react";
 import type { Filter, Task } from "../types/task";
 import { TaskItem } from "./TaskItem";
 import styles from "./TaskList.module.css";
@@ -18,7 +18,7 @@ interface Props {
   onEditCancel: () => void;
 
   // actions
-  onToggle: (taskId: number, event: MouseEvent<HTMLDivElement>) => void;
+  onToggle: (taskId: number) => void;
   onRemove: (taskId: number) => void;
   dragId: number | null;
   dragOverId: number | null;

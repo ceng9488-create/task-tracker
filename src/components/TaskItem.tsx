@@ -1,4 +1,4 @@
-import type { ReactElement, MouseEvent, DragEvent, RefObject } from "react";
+import type { ReactElement, DragEvent, RefObject } from "react";
 import type { Task } from "../types/task";
 import styles from "./TaskItem.module.css";
 
@@ -15,7 +15,7 @@ interface Props {
   onEditCancel: () => void;
 
   // toggle & remove
-  onToggle: (taskId: number, event: MouseEvent<HTMLDivElement>) => void;
+  onToggle: (taskId: number) => void;
   onRemove: (taskId: number) => void;
 
   // drag state
@@ -64,7 +64,7 @@ export function TaskItem({
       <div className={styles.dragHandle}>⠿</div>
 
       <div
-        onClick={(event) => onToggle(task.id, event)}
+        onClick={() => onToggle(task.id)}
         className={[
           styles.checkbox,
           task.isDone     && styles.done,

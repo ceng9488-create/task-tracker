@@ -37,18 +37,20 @@ function App() {
     setInput,
     setSelectedPriority,
     setSelectedCategory,
-    setEditId,
     setEditText,
     addTask,
     toggleTask,
     removeTask,
     startEdit,
     confirmEdit,
+    cancelEdit,
     onDragStart,
     onDragOver,
     onDrop,
     onDragEnd,
   } = useTaskManager();
+
+  
 
   const { theme, toggleTheme } = useTheme();
 
@@ -104,7 +106,7 @@ function App() {
         onEditStart={startEdit}
         onEditConfirm={confirmEdit}
         onEditTextChange={setEditText}
-        onEditCancel={() => { setEditId(null); setEditText(""); }}
+        onEditCancel={cancelEdit}
         onToggle={toggleTask}
         onRemove={removeTask}
         dragId={dragId}
