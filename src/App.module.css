@@ -38,11 +38,157 @@
   margin: 0;
 }
 
+@keyframes sceneShimmer {
+  0%   { filter: brightness(1) saturate(1); }
+  40%  { filter: brightness(1.1) saturate(1.2); }
+  100% { filter: brightness(1) saturate(1); }
+}
+
+@keyframes orbPulse {
+  0%   { transform: scale(1) translateY(0); }
+  40%  { transform: scale(1.25) translateY(-5px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
 .dateDisplay {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 24px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: background 2s ease;
+  cursor: default;
+}
+
+.dateDisplay:hover {
+  animation: sceneShimmer 0.8s ease-out 1;
+}
+
+/* Celestial orb (sun / moon) */
+.dateDisplay::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dateDisplay:hover::before {
+  animation: orbPulse 0.8s ease-out 1;
+}
+
+/* Stars layer (night only) */
+.dateDisplay::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ── Morning 05:00–11:59 ── */
+.dateDisplay[data-scene="morning"] {
+  background: linear-gradient(150deg, #FFF1C8 0%, #FFD49A 45%, #FFB3A3 100%);
+}
+.dateDisplay[data-scene="morning"]::before {
+  width: 72px;
+  height: 72px;
+  top: -18px;
+  right: 28px;
+  background: radial-gradient(circle, #FFE566 20%, #FFB347 65%, transparent 100%);
+  box-shadow: 0 0 28px 10px rgba(255, 210, 80, 0.45);
+}
+.dateDisplay[data-scene="morning"] .dateDay,
+.dateDisplay[data-scene="morning"] .dateMonth {
+  color: #5C3A1E;
+  text-shadow: none;
+}
+.dateDisplay[data-scene="morning"] .dateSeparator {
+  background-color: rgba(92, 58, 30, 0.35);
+  opacity: 1;
+}
+
+/* ── Afternoon 12:00–16:59 ── */
+.dateDisplay[data-scene="afternoon"] {
+  background: linear-gradient(150deg, #7EC8E3 0%, #4DA8DA 50%, #2980B9 100%);
+}
+.dateDisplay[data-scene="afternoon"]::before {
+  width: 88px;
+  height: 88px;
+  top: -24px;
+  right: 18px;
+  background: radial-gradient(circle, #FFFDE4 15%, #FFE135 55%, transparent 100%);
+  box-shadow: 0 0 40px 16px rgba(255, 230, 60, 0.5);
+}
+.dateDisplay[data-scene="afternoon"] .dateDay,
+.dateDisplay[data-scene="afternoon"] .dateMonth {
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+}
+.dateDisplay[data-scene="afternoon"] .dateSeparator {
+  background-color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
+
+/* ── Evening 17:00–19:59 ── */
+.dateDisplay[data-scene="evening"] {
+  background: linear-gradient(150deg, #FF7E5F 0%, #C43B7A 50%, #4A1A6B 100%);
+}
+.dateDisplay[data-scene="evening"]::before {
+  width: 64px;
+  height: 64px;
+  top: -12px;
+  right: 36px;
+  background: radial-gradient(circle, #FFD680 20%, #FF8C00 60%, transparent 100%);
+  box-shadow: 0 0 30px 12px rgba(255, 140, 0, 0.4);
+}
+.dateDisplay[data-scene="evening"] .dateDay,
+.dateDisplay[data-scene="evening"] .dateMonth {
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+.dateDisplay[data-scene="evening"] .dateSeparator {
+  background-color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+}
+
+/* ── Night 20:00–04:59 ── */
+.dateDisplay[data-scene="night"] {
+  background: linear-gradient(150deg, #0F0C29 0%, #1B1464 55%, #2C3E50 100%);
+}
+.dateDisplay[data-scene="night"]::before {
+  width: 44px;
+  height: 44px;
+  top: 14px;
+  right: 36px;
+  background: radial-gradient(circle, #F0EAC8 30%, #C8D8E8 70%, transparent 100%);
+  box-shadow: -12px 4px 0 3px #0F0C29, 0 0 18px 5px rgba(200, 230, 255, 0.25);
+}
+/* Scattered stars */
+.dateDisplay[data-scene="night"]::after {
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  top: 12px;
+  right: 120px;
+  box-shadow:
+    18px 6px 0 rgba(255,255,255,0.7),
+    40px 22px 0 1px rgba(255,255,255,0.5),
+    62px 8px 0 rgba(255,255,255,0.8),
+    90px 28px 0 rgba(255,255,255,0.6),
+    110px 14px 0 1px rgba(255,255,255,0.9),
+    -20px 30px 0 rgba(255,255,255,0.5),
+    -45px 10px 0 rgba(255,255,255,0.7);
+}
+.dateDisplay[data-scene="night"] .dateDay,
+.dateDisplay[data-scene="night"] .dateMonth {
+  color: #E8F0FE;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+.dateDisplay[data-scene="night"] .dateSeparator {
+  background-color: rgba(232, 240, 254, 0.3);
+  opacity: 1;
 }
 
 .dateGroup {

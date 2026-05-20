@@ -142,10 +142,16 @@ function TaskTrackerApp() {
   const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
   const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
 
+  const hour = now.getHours();
+  const scene = hour >= 5 && hour < 12 ? "morning"
+    : hour >= 12 && hour < 17 ? "afternoon"
+    : hour >= 17 && hour < 20 ? "evening"
+    : "night";
+
   return (
     <div className={styles.app}>
       <div className={styles.header}>
-        <div className={styles.dateDisplay}>
+        <div className={styles.dateDisplay} data-scene={scene}>
           <div className={styles.dateGroup}>
             <span className={styles.dateDay}>{ordinal}</span>
             <span className={styles.dateMonth}>{month}</span>
