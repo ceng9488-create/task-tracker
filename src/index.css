@@ -34,18 +34,18 @@
 }
 
 :root[data-theme="dark"] {
-  --bg-app:         #0D0D0F;
-  --bg-card:        #15151a;
-  --bg-card-hover:  #1E1E26;
-  --bg-input:       #15151a;
-  --bg-hint-key:    #1E1E24;
+  --bg-app:         #1A1A1E;
+  --bg-card:        #222228;
+  --bg-card-hover:  #2A2A34;
+  --bg-input:       #222228;
+  --bg-hint-key:    #2A2A32;
 
   --text-primary:   #F0EFED;
-  --text-secondary: #8b8b8b;
-  --text-muted:     #6b6b6b;
-  --text-faint:     #5a5a5a;
+  --text-secondary: #9a9a9a;
+  --text-muted:     #7a7a7a;
+  --text-faint:     #646464;
 
-  --border:         #2a2a30;
+  --border:         #38383F;
   --border-focus:   #1d9e75;
 
  --accent:          #1D9E75;

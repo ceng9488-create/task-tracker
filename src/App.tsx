@@ -5,17 +5,19 @@ import { StatsGrid } from "./components/StatsGrid";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { FilterBar } from "./components/FilterBar";
 import { TaskList } from "./components/TaskList";
-import { DailySummary } from "./components/DailySummary";
 import { Sidebar } from "./components/Sidebar";
 import styles from "./App.module.css";
 import { useAuth } from "./context/AuthContext";
 
 
+const DEV_EMAIL = import.meta.env.VITE_DEV_EMAIL as string | undefined;
+const DEV_PASSWORD = import.meta.env.VITE_DEV_PASSWORD as string | undefined;
+
 function LoginPage() {
   const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(DEV_EMAIL ?? "");
+  const [password, setPassword] = useState(DEV_PASSWORD ?? "");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -70,6 +72,23 @@ function LoginPage() {
       </form>
 
       <div className={styles.authDivider}><span>or</span></div>
+
+      {DEV_EMAIL && (
+        <button
+          type="button"
+          className={styles.devButton}
+          onClick={async () => {
+            setLoading(true);
+            setError(null);
+            const err = await signInWithEmail(DEV_EMAIL, DEV_PASSWORD!);
+            if (err) setError(err);
+            setLoading(false);
+          }}
+          disabled={loading}
+        >
+          Dev Login ({DEV_EMAIL})
+        </button>
+      )}
 
       <button onClick={signInWithGoogle} data-testid="google-signin-btn" className={styles.googleButton}>
         Continue with Google
@@ -130,46 +149,54 @@ function TaskTrackerApp() {
     onDragEnd,
   } = useTaskManager();
 
+  const { session } = useAuth();
+  const username = session?.user?.user_metadata?.full_name
+    ?? session?.user?.user_metadata?.name
+    ?? session?.user?.email?.split('@')[0]
+    ?? 'there';
+
   const [now, setNow] = useState(new Date());
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
+    const id = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(id);
   }, []);
 
   const day = now.getDate();
-  const ordinal = (() => { const s = ["th","st","nd","rd"]; const v = day % 100; return day + (s[(v-20)%10] || s[v] || s[0]); })();
   const month = now.toLocaleDateString("en-US", { month: "long" });
   const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
-  const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
 
   const hour = now.getHours();
   const scene = hour >= 5 && hour < 12 ? "morning"
     : hour >= 12 && hour < 17 ? "afternoon"
     : hour >= 17 && hour < 20 ? "evening"
     : "night";
+  const greeting = `Good ${scene}`;
+
+  const summaryPriority = highPriorityCount > 0 ? 'high'
+    : mediumPriorityCount > 0 ? 'medium'
+    : lowPriorityCount > 0 ? 'low'
+    : null;
+  const summaryLine = summaryPriority === 'high' ? `${highPriorityCount} high priority`
+    : summaryPriority === 'medium' ? `${mediumPriorityCount} medium priority`
+    : summaryPriority === 'low' ? `${lowPriorityCount} low priority`
+    : null;
 
   return (
     <div className={styles.app}>
       <div className={styles.header}>
-        <div className={styles.dateDisplay} data-scene={scene}>
-          <div className={styles.dateGroup}>
-            <span className={styles.dateDay}>{ordinal}</span>
-            <span className={styles.dateMonth}>{month}</span>
+        <div className={styles.dateDisplay}>
+          <div className={styles.dateLeft}>
+            <span className={styles.dateMain}>{weekday}, {day} {month}</span>
+            <span className={styles.dateGreeting}>{greeting}, {username}</span>
           </div>
-          <div className={styles.dateSeparator} />
-          <div className={styles.dateGroup}>
-            <span className={styles.dateDay}>{weekday}</span>
-            <span className={styles.dateMonth}>{time}</span>
+          <div className={styles.dateSummary}>
+            {remaining === 0
+              ? <><span className={styles.dateSummaryDot} data-priority="done" /><span className={styles.dateSummaryDone}>All done!</span></>
+              : <><span className={styles.dateSummaryDot} data-priority={summaryPriority} /><span className={styles.dateSummaryCount}>{summaryLine}</span></>
+            }
           </div>
         </div>
       </div>
-
-      <DailySummary
-        highPriorityCount={highPriorityCount}
-        mediumPriorityCount={mediumPriorityCount}
-        lowPriorityCount={lowPriorityCount}
-        remaining={remaining}
-      />
 
       <StatsGrid
         total={total}

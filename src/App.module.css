@@ -54,13 +54,52 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
   padding: 20px 24px;
   border-radius: 16px;
   position: relative;
   overflow: hidden;
   transition: background 2s ease;
   cursor: default;
+}
+
+.dateLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dateSummary {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+}
+
+.dateSummaryDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 7px;
+}
+
+.dateSummaryDot[data-priority="high"]   { background: var(--priority-high); }
+.dateSummaryDot[data-priority="medium"] { background: var(--priority-medium); }
+.dateSummaryDot[data-priority="low"]    { background: var(--priority-low); }
+.dateSummaryDot[data-priority="done"]   { background: var(--accent); }
+
+.dateSummaryCount {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dateSummaryDone {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.75;
 }
 
 .dateDisplay:hover {
@@ -98,16 +137,14 @@
   background: radial-gradient(circle, #FFE566 20%, #FFB347 65%, transparent 100%);
   box-shadow: 0 0 28px 10px rgba(255, 210, 80, 0.45);
 }
-.dateDisplay[data-scene="morning"] .dateDay,
-.dateDisplay[data-scene="morning"] .dateMonth {
+.dateDisplay[data-scene="morning"] .dateMain,
+.dateDisplay[data-scene="morning"] .dateGreeting,
+.dateDisplay[data-scene="morning"] .dateSummaryCount,
+.dateDisplay[data-scene="morning"] 
+.dateDisplay[data-scene="morning"] .dateSummaryDone {
   color: #5C3A1E;
   text-shadow: none;
 }
-.dateDisplay[data-scene="morning"] .dateSeparator {
-  background-color: rgba(92, 58, 30, 0.35);
-  opacity: 1;
-}
-
 /* ── Afternoon 12:00–16:59 ── */
 .dateDisplay[data-scene="afternoon"] {
   background: linear-gradient(150deg, #7EC8E3 0%, #4DA8DA 50%, #2980B9 100%);
@@ -120,16 +157,14 @@
   background: radial-gradient(circle, #FFFDE4 15%, #FFE135 55%, transparent 100%);
   box-shadow: 0 0 40px 16px rgba(255, 230, 60, 0.5);
 }
-.dateDisplay[data-scene="afternoon"] .dateDay,
-.dateDisplay[data-scene="afternoon"] .dateMonth {
+.dateDisplay[data-scene="afternoon"] .dateMain,
+.dateDisplay[data-scene="afternoon"] .dateGreeting,
+.dateDisplay[data-scene="afternoon"] .dateSummaryCount,
+.dateDisplay[data-scene="afternoon"] 
+.dateDisplay[data-scene="afternoon"] .dateSummaryDone {
   color: #fff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
 }
-.dateDisplay[data-scene="afternoon"] .dateSeparator {
-  background-color: rgba(255, 255, 255, 0.5);
-  opacity: 1;
-}
-
 /* ── Evening 17:00–19:59 ── */
 .dateDisplay[data-scene="evening"] {
   background: linear-gradient(150deg, #FF7E5F 0%, #C43B7A 50%, #4A1A6B 100%);
@@ -142,16 +177,14 @@
   background: radial-gradient(circle, #FFD680 20%, #FF8C00 60%, transparent 100%);
   box-shadow: 0 0 30px 12px rgba(255, 140, 0, 0.4);
 }
-.dateDisplay[data-scene="evening"] .dateDay,
-.dateDisplay[data-scene="evening"] .dateMonth {
+.dateDisplay[data-scene="evening"] .dateMain,
+.dateDisplay[data-scene="evening"] .dateGreeting,
+.dateDisplay[data-scene="evening"] .dateSummaryCount,
+.dateDisplay[data-scene="evening"] 
+.dateDisplay[data-scene="evening"] .dateSummaryDone {
   color: #fff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
-.dateDisplay[data-scene="evening"] .dateSeparator {
-  background-color: rgba(255, 255, 255, 0.4);
-  opacity: 1;
-}
-
 /* ── Night 20:00–04:59 ── */
 .dateDisplay[data-scene="night"] {
   background: linear-gradient(150deg, #0F0C29 0%, #1B1464 55%, #2C3E50 100%);
@@ -181,42 +214,27 @@
     -20px 30px 0 rgba(255,255,255,0.5),
     -45px 10px 0 rgba(255,255,255,0.7);
 }
-.dateDisplay[data-scene="night"] .dateDay,
-.dateDisplay[data-scene="night"] .dateMonth {
+.dateDisplay[data-scene="night"] .dateMain,
+.dateDisplay[data-scene="night"] .dateGreeting,
+.dateDisplay[data-scene="night"] .dateSummaryCount,
+.dateDisplay[data-scene="night"] 
+.dateDisplay[data-scene="night"] .dateSummaryDone {
   color: #E8F0FE;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
-.dateDisplay[data-scene="night"] .dateSeparator {
-  background-color: rgba(232, 240, 254, 0.3);
-  opacity: 1;
-}
-
-.dateGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.dateSeparator {
-  width: 1px;
-  height: 52px;
-  background-color: var(--text-secondary);
-  opacity: 0.3;
-}
-
-.dateDay {
-  font-size: 28px;
+.dateMain {
+  font-size: 26px;
   font-weight: 700;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   color: var(--text-primary);
   line-height: 1;
 }
 
-.dateMonth {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -1px;
+.dateGreeting {
+  font-size: 14px;
+  font-weight: 400;
   color: var(--text-primary);
+  opacity: 0.75;
   line-height: 1;
 }
 
@@ -364,6 +382,28 @@
   flex: 1;
   height: 1px;
   background: var(--border);
+}
+
+.devButton {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px dashed #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  color: #f59e0b;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.devButton:hover:not(:disabled) {
+  background: rgba(245, 158, 11, 0.16);
+}
+
+.devButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .googleButton {

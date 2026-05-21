@@ -31,12 +31,15 @@ export function AuthProvider({ children } : {children: ReactNode }) {
         return () => subscription.unsubscribe();
     }, []);
 
-    async function signInWithGoogle() {
-        await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: { redirectTo: window.location.origin },
-        })
-    }
+async function signInWithGoogle() {
+    const redirectTo = window.location.origin + import.meta.env.BASE_URL;
+    console.log('BASE_URL:', import.meta.env.BASE_URL);
+    console.log('redirectTo:', redirectTo);
+    await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo },
+    })
+}
 
     async function signInWithEmail(email: string, password: string): Promise<string | null> {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
