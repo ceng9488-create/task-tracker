@@ -9,4 +9,22 @@ export interface Task {
   category: Category;
   isDone: boolean;
   position: number;
+  completedAt: string | null;
+}
+
+export interface DayHistory {
+  date: string; // YYYY-MM-DD
+  total: number;
+  high: number;
+  medium: number;
+  low: number;
+  tasks: HistoryTask[];
+}
+
+export interface HistoryTask {
+  id: number;
+  text: string;
+  priority: Priority;
+  category: Category;
+  completedAt: string;
 }

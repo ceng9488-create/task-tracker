@@ -8,6 +8,7 @@ import { TaskList } from "./components/TaskList";
 import { Sidebar } from "./components/Sidebar";
 import styles from "./App.module.css";
 import { useAuth } from "./context/AuthContext";
+import { WeeklySummary } from "./components/WeeklySummary";
 
 
 const DEV_EMAIL = import.meta.env.VITE_DEV_EMAIL as string | undefined;
@@ -255,13 +256,15 @@ function TaskTrackerApp() {
 }
 function App() {
   const { session, loading } = useAuth();
+  const [view, setView] = useState<"tasks" | "history">("tasks");
+
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (!session) return <LoginPage />;
   return (
     <div className={styles.layout}>
-      <Sidebar />
+      <Sidebar view={view} onNavigate={setView} />
       <div className={styles.main}>
-        <TaskTrackerApp />
+         {view === "tasks" ? <TaskTrackerApp /> : <WeeklySummary />}
       </div>
     </div>
   );

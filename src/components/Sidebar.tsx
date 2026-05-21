@@ -2,7 +2,12 @@ import styles from "./Sidebar.module.css";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 
-export function Sidebar() {
+interface Props {
+  view: "tasks" | "history";
+  onNavigate: (v: "tasks" | "history") => void;
+}
+
+export function Sidebar({ view, onNavigate }: Props) {
   const { theme, toggleTheme } = useTheme();
   const { signOut, session } = useAuth();
 
@@ -14,9 +19,17 @@ export function Sidebar() {
           <span className={styles.logoText}>Task Tracker</span>
         </div>
         <nav className={styles.nav}>
-          <div className={`${styles.navItem} ${styles.active}`}>
-            <span className={styles.navIcon}>☰</span>
-            Tasks
+          <div
+            className={`${styles.navItem} ${view === "tasks" ? styles.active : ""}`}
+            onClick={() => onNavigate("tasks")}
+          >
+            <span className={styles.navIcon}>☰</span> Tasks
+          </div>
+          <div
+            className={`${styles.navItem} ${view === "history" ? styles.active : ""}`}
+            onClick={() => onNavigate("history")}
+          >
+            <span className={styles.navIcon}>📅</span> History
           </div>
         </nav>
       </div>
@@ -27,10 +40,18 @@ export function Sidebar() {
             {session.user.email}
           </p>
         )}
-        <button data-testid="theme-toggle-btn" onClick={toggleTheme} className={styles.iconButton}>
+        <button
+          data-testid="theme-toggle-btn"
+          onClick={toggleTheme}
+          className={styles.iconButton}
+        >
           {theme === "light" ? "☀ Light" : "☾ Dark"}
         </button>
-        <button data-testid="signout-btn" onClick={signOut} className={styles.signOutButton}>
+        <button
+          data-testid="signout-btn"
+          onClick={signOut}
+          className={styles.signOutButton}
+        >
           Sign out
         </button>
       </div>
