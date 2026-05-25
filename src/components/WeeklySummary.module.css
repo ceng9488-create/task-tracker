@@ -1,6 +1,47 @@
 .container { padding: 2rem 1.5rem; max-width: 680px; width: 100%; }
-.title { font-size: 20px; font-weight: 600; margin-bottom: 2rem; color: var(--text-primary); }
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.title { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navBtn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 10px;
+  line-height: 1;
+  transition: opacity 0.15s;
+}
+
+.navBtn:hover:not(:disabled) { opacity: 0.7; }
+.navBtn:disabled { opacity: 0.3; cursor: default; }
+
+.weekRange {
+  font-size: 13px;
+  color: var(--text-muted);
+  min-width: 110px;
+  text-align: center;
+}
 .loading { padding: 2rem; color: var(--text-muted); }
+
+.chartCard {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem 1rem;
+}
 
 .chart {
   display: flex;
@@ -30,16 +71,25 @@
   width: 100%;
   display: flex;
   align-items: flex-end;
+  background: var(--border);
+  opacity: 0.9;
 }
 
 .bar {
   width: 100%;
-  border-radius: 6px 6px 0 0;
+  /* border-radius: 6px 6px 0 0; */
   display: flex;
   flex-direction: column;
   overflow: hidden;
   min-height: 4px;
   background: var(--bg-card);
+}
+
+.barEmpty {
+  height: 24px !important;
+  background: transparent;
+  border: 1.5px dashed var(--border);
+  opacity: 0.5;
 }
 
 .low    { background: var(--priority-low); }
@@ -61,7 +111,12 @@
 
 .dayCol:hover { opacity: 0.8; }
 
-.dayColSelected .bar {
+.dayColSelected .bar:not(.barEmpty) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.barWrapSelected {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
