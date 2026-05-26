@@ -4,7 +4,7 @@ export const PRIORITY_OPTIONS: Priority[] = ["high", "medium", "low"];
 
 export const CATEGORY_OPTIONS: Category[] = ["Work", "Health", "Learning", "Personal"];
 
-export const FILTER_OPTIONS = ["All", "Active", "Done", "High priority"] as const;
+export const FILTER_OPTIONS = ["All", "Active", "Completed", "High priority"] as const;
 
 export const ANIMATION_DURATION_MS = {
   ADD_TASK_HIGHLIGHT: 500,

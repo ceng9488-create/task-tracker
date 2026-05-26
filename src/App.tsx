@@ -9,6 +9,7 @@ import { Sidebar } from "./components/Sidebar";
 import styles from "./App.module.css";
 import { useAuth } from "./context/AuthContext";
 import { WeeklySummary } from "./components/WeeklySummary";
+import { CompletionPopup } from "./components/CompletionPopup";
 
 
 const DEV_EMAIL = import.meta.env.VITE_DEV_EMAIL as string | undefined;
@@ -124,6 +125,7 @@ function TaskTrackerApp() {
     justCompleted,
     removing,
     justAdded,
+    completionPopup,
     editRef,
     listRef,
     total,
@@ -182,6 +184,8 @@ function TaskTrackerApp() {
     : summaryPriority === 'low' ? `${lowPriorityCount} low priority`
     : null;
 
+  const hasActiveTasks = tasks.length > 0;
+
   return (
     <div className={styles.app}>
       <div className={styles.header}>
@@ -190,21 +194,23 @@ function TaskTrackerApp() {
             <span className={styles.dateMain}>{weekday}, {day} {month}</span>
             <span className={styles.dateGreeting}>{greeting}, {username}</span>
           </div>
-          <div className={styles.dateSummary}>
-            {remaining === 0
-              ? <><span className={styles.dateSummaryDot} data-priority="done" /><span className={styles.dateSummaryDone}>All done!</span></>
-              : <><span className={styles.dateSummaryDot} data-priority={summaryPriority} /><span className={styles.dateSummaryCount}>{summaryLine}</span></>
-            }
-          </div>
+          {hasActiveTasks && (
+            <div className={styles.dateSummary}>
+              <span className={styles.dateSummaryDot} data-priority={summaryPriority} />
+              <span className={styles.dateSummaryCount}>{summaryLine}</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <StatsGrid
-        total={total}
-        doneCount={doneCount}
-        remaining={remaining}
-        pct={pct}
-      />
+      {hasActiveTasks && (
+        <StatsGrid
+          total={total}
+          doneCount={doneCount}
+          remaining={remaining}
+          pct={pct}
+        />
+      )}
 
       <AddTaskForm
         input={input}
@@ -216,41 +222,45 @@ function TaskTrackerApp() {
         setSelectedCategory={setSelectedCategory}
       />
 
-      <FilterBar activeFilter={filter} onFilterChange={setFilter} />
+      {hasActiveTasks && (
+        <>
+          <FilterBar activeFilter={filter} onFilterChange={setFilter} />
 
-      <TaskList
-        visible={visible}
-        activeFilter={filter}
-        listRef={listRef}
-        editId={editId}
-        editText={editText}
-        editRef={editRef}
-        onEditStart={startEdit}
-        onEditConfirm={confirmEdit}
-        onEditTextChange={setEditText}
-        onEditCancel={cancelEdit}
-        onToggle={toggleTask}
-        onRemove={removeTask}
-        dragId={dragId}
-        dragOverId={dragOverId}
-        onDragStart={onDragStart}
-        onDragOver={onDragOver}
-        onDrop={onDrop}
-        onDragEnd={onDragEnd}
-        removing={removing}
-        justAdded={justAdded}
-        justCompleted={justCompleted}
-      />
+          <TaskList
+            visible={visible}
+            activeFilter={filter}
+            listRef={listRef}
+            editId={editId}
+            editText={editText}
+            editRef={editRef}
+            onEditStart={startEdit}
+            onEditConfirm={confirmEdit}
+            onEditTextChange={setEditText}
+            onEditCancel={cancelEdit}
+            onToggle={toggleTask}
+            onRemove={removeTask}
+            dragId={dragId}
+            dragOverId={dragOverId}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+            onDragEnd={onDragEnd}
+            removing={removing}
+            justAdded={justAdded}
+            justCompleted={justCompleted}
+          />
 
-      {tasks.length > 0 && (
-        <div className={styles.hint}>
-          <span className={styles.hintKey}>Enter</span> to add
-          <span className={styles.hintDivider}>·</span>
-          <span className={styles.hintKey}>Double-click</span> to edit
-          <span className={styles.hintDivider}>·</span>
-          <span className={styles.hintKey}>Drag</span> to reorder
-        </div>
+          <div className={styles.hint}>
+            <span className={styles.hintKey}>Enter</span> to add
+            <span className={styles.hintDivider}>·</span>
+            <span className={styles.hintKey}>Double-click</span> to edit
+            <span className={styles.hintDivider}>·</span>
+            <span className={styles.hintKey}>Drag</span> to reorder
+          </div>
+        </>
       )}
+
+      <CompletionPopup popup={completionPopup} />
     </div>
   );
 }

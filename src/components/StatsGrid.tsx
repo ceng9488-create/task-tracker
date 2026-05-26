@@ -11,7 +11,7 @@ interface Props {
 export function StatsGrid({ total, doneCount, remaining, pct }: Props): ReactElement {
   const stats = [
     { label: "Total",      value: total },
-    { label: "Done",       value: doneCount },
+    { label: "Completed",  value: doneCount },
     { label: "Remaining",  value: remaining },
     { label: "Completion", value: `${pct}%` },
   ];

@@ -26,7 +26,7 @@ export function AddTaskForm({
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && addTask()}
-        placeholder="What needs to be done?"
+        placeholder="Anything needs to be done by today?"
         className={styles.textInput}
       />
       <select

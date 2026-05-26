@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ANIMATION_DURATION_MS } from "../const/task";
 import type { Category, Filter, Priority, Task } from "../types/task";
 import { useAuth } from "../context/AuthContext";
@@ -13,8 +13,25 @@ function rowToTask(row: Record<string, unknown>): Task {
     isDone: row.is_done as boolean,
     position: row.position as number,
     completedAt: (row.completed_at as string | null) ?? null,
+    createdAt: (row.created_at as string | null) ?? null,
   };
 }
+function formatElapsed(ms: number): string {
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return `${s}s`;
+  const m = Math.floor(s / 60);
+  const rs = s % 60;
+  if (m < 60) return rs > 0 ? `${m}m ${rs}s` : `${m}m`;
+  const h = Math.floor(m / 60);
+  const rm = m % 60;
+  return rm > 0 ? `${h}h ${rm}m` : `${h}h`;
+}
+
+export interface CompletionPopup {
+  taskText: string;
+  elapsed: string;
+}
+
 export function useTasks(filter: Filter) {
   const { session } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -22,6 +39,8 @@ export function useTasks(filter: Filter) {
   const [justCompleted, setJustCompleted] = useState<number | null>(null);
   const [removing, setRemoving] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState<number | null>(null);
+  const [completionPopup, setCompletionPopup] = useState<CompletionPopup | null>(null);
+  const startTimesRef = useRef<Record<number, number>>({});
 
   useEffect(() => {
     if (!session) {
@@ -31,12 +50,20 @@ export function useTasks(filter: Filter) {
       return;
     }
     setLoading(true);
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
     supabase
       .from("tasks")
       .select("*")
+      .gte("created_at", todayStart.toISOString())
       .order("position", { ascending: true })
       .then(({ data }) => {
-        setTasks(data ? data.map(rowToTask) : []);
+        const loaded = data ? data.map(rowToTask) : [];
+        const now = Date.now();
+        for (const t of loaded) {
+          if (!t.isDone) startTimesRef.current[t.id] = now;
+        }
+        setTasks(loaded);
         setLoading(false);
       });
   }, [session]);
@@ -62,6 +89,7 @@ export function useTasks(filter: Filter) {
 
       if (error || !data) return;
       const newTask = rowToTask(data);
+      startTimesRef.current[newTask.id] = Date.now();
       setTasks((previousTasks) => [...previousTasks, newTask]);
       setJustAdded(newTask.id);
       setTimeout(
@@ -78,10 +106,17 @@ export function useTasks(filter: Filter) {
       if (!task) return;
       if (task && !task.isDone) {
         setJustCompleted(id);
+        setTimeout(() => setJustCompleted(null), ANIMATION_DURATION_MS.COMPLETION_CELEBRATE);
 
-        setTimeout(() => {
-          setJustCompleted(null);
-        }, ANIMATION_DURATION_MS.COMPLETION_CELEBRATE);
+        const startTime = startTimesRef.current[id];
+        if (startTime) {
+          const elapsed = formatElapsed(Date.now() - startTime);
+          setCompletionPopup({ taskText: task.text, elapsed });
+          setTimeout(() => setCompletionPopup(null), 4000);
+          delete startTimesRef.current[id];
+        }
+      } else if (task?.isDone) {
+        startTimesRef.current[id] = Date.now();
       }
       setTasks((previousTasks) =>
         previousTasks.map((task) =>
@@ -146,7 +181,7 @@ export function useTasks(filter: Filter) {
 
   let visible = tasks;
   if (filter === "Active") visible = tasks.filter((task) => !task.isDone);
-  else if (filter === "Done") visible = tasks.filter((task) => task.isDone);
+  else if (filter === "Completed") visible = tasks.filter((task) => task.isDone);
   else if (filter === "High priority")
     visible = tasks.filter((task) => task.priority === "high" && !task.isDone);
 
@@ -157,6 +192,7 @@ export function useTasks(filter: Filter) {
     justCompleted,
     removing,
     justAdded,
+    completionPopup,
 
     // computed values
     total,

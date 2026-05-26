@@ -33,7 +33,7 @@ export function useWeeklySummary(weekOffset: number = 0) {
 
     supabase
       .from("tasks")
-      .select("id, text, priority, category, completed_at")
+      .select("id, text, priority, category, created_at, completed_at")
       .gte("completed_at", from)
       .lte("completed_at", to)
       .order("completed_at", { ascending: false })
@@ -55,6 +55,7 @@ export function useWeeklySummary(weekOffset: number = 0) {
               text: row.text as string,
               priority: row.priority as "high" | "medium" | "low",
               category: row.category as "Work" | "Health" | "Learning" | "Personal",
+              createdAt: (row.created_at as string | null) ?? null,
               completedAt: row.completed_at as string,
             });
           }

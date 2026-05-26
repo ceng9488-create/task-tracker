@@ -20,6 +20,13 @@ function defaultDateForOffset(offset: number): string {
   return today.toISOString().slice(0, 10);
 }
 
+function fmtTime(iso: string | null): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleTimeString("en-US", {
+    timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: true,
+  });
+}
+
 function fmtWeekRange(history: { date: string }[]) {
   if (history.length < 7) return "";
   const fmt = (d: string) =>
@@ -126,10 +133,24 @@ export function WeeklySummary() {
                   {selectedDay.tasks.map((task) => (
                     <li key={task.id} className={styles.taskItem}>
                       <span className={styles.taskDot} data-priority={task.priority} />
-                      <span className={styles.taskText}>{task.text}</span>
-                      <span className={styles.taskMeta}>
-                        {PRIORITY_LABEL[task.priority]} · {task.category}
-                      </span>
+                      <div className={styles.taskBody}>
+                        <span className={styles.taskText}>{task.text}</span>
+                        <span className={styles.taskMeta}>
+                          {PRIORITY_LABEL[task.priority]} · {task.category}
+                        </span>
+                      </div>
+                      <div className={styles.taskTimes}>
+                        {task.createdAt && (
+                          <span className={styles.taskTime}>
+                            <span className={styles.taskTimeLabel}>Added</span>
+                            {fmtTime(task.createdAt)}
+                          </span>
+                        )}
+                        <span className={styles.taskTime}>
+                          <span className={styles.taskTimeLabel}>Done</span>
+                          {fmtTime(task.completedAt)}
+                        </span>
+                      </div>
                     </li>
                   ))}
                 </ul>

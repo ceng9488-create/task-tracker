@@ -1,6 +1,6 @@
 export type Priority = "high" | "medium" | "low";
 export type Category = "Work" | "Health" | "Learning" | "Personal";
-export type Filter = "All" | "Active" | "Done" | "High priority";
+export type Filter = "All" | "Active" | "Completed" | "High priority";
 
 export interface Task {
   id: number;
@@ -10,6 +10,7 @@ export interface Task {
   isDone: boolean;
   position: number;
   completedAt: string | null;
+  createdAt: string | null;
 }
 
 export interface DayHistory {
@@ -26,5 +27,6 @@ export interface HistoryTask {
   text: string;
   priority: Priority;
   category: Category;
+  createdAt: string | null;
   completedAt: string;
 }

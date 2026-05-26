@@ -43,11 +43,13 @@ export function TaskList({
     <div ref={listRef} className={styles.list}>
       {visible.length === 0 && (
         <div className={styles.empty}>
-          {activeFilter === "Done"
+          {activeFilter === "Completed"
             ? "Nothing completed yet — keep going!"
             : activeFilter === "High priority"
               ? "No high priority tasks — smooth sailing"
-              : "No tasks here — time to add some!"}
+              : activeFilter === "Active"
+                ? "All done for today!"
+                : "No tasks here — time to add some!"}
         </div>
       )}
       {visible.map((task) => (
