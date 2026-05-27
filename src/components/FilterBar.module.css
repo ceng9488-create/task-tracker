@@ -19,6 +19,6 @@
 
 .active {
   background: var(--text-primary);
-  color: var(--bg-app);
+  color: var(--bg-solid);
   transform: scale(1.05);
 }

@@ -10,6 +10,7 @@ import styles from "./App.module.css";
 import { useAuth } from "./context/AuthContext";
 import { WeeklySummary } from "./components/WeeklySummary";
 import { CompletionPopup } from "./components/CompletionPopup";
+import { PomodoroPage } from "./components/PomodoroPage";
 
 
 const DEV_EMAIL = import.meta.env.VITE_DEV_EMAIL as string | undefined;
@@ -266,7 +267,7 @@ function TaskTrackerApp() {
 }
 function App() {
   const { session, loading } = useAuth();
-  const [view, setView] = useState<"tasks" | "history">("tasks");
+  const [view, setView] = useState<"tasks" | "history" | "pomodoro">("tasks");
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (!session) return <LoginPage />;
@@ -274,7 +275,9 @@ function App() {
     <div className={styles.layout}>
       <Sidebar view={view} onNavigate={setView} />
       <div className={styles.main}>
-         {view === "tasks" ? <TaskTrackerApp /> : <WeeklySummary />}
+        {view === "tasks" ? <TaskTrackerApp />
+          : view === "pomodoro" ? <PomodoroPage />
+          : <WeeklySummary />}
       </div>
     </div>
   );

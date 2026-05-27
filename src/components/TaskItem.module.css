@@ -3,10 +3,6 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.5; }
-}
 
 /* ── Container ─────────────────────────────────────────── */
 .container {
@@ -80,7 +76,6 @@
 
 .priorityDot.high   { background: var(--priority-high); }
 .priorityDot.medium { background: var(--priority-medium); }
-.priorityDot.pulse  { animation: pulse 2s infinite; }
 
 /* ── Task text ─────────────────────────────────────────── */
 .taskText {

@@ -80,7 +80,6 @@ export function TaskItem({
         className={[
           styles.priorityDot,
           styles[task.priority],
-          task.priority === "high" && !task.isDone && styles.pulse,
         ].filter(Boolean).join(" ")}
       />
 

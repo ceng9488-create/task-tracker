@@ -3,8 +3,8 @@ import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 
 interface Props {
-  view: "tasks" | "history";
-  onNavigate: (v: "tasks" | "history") => void;
+  view: "tasks" | "history" | "pomodoro";
+  onNavigate: (v: "tasks" | "history" | "pomodoro") => void;
 }
 
 export function Sidebar({ view, onNavigate }: Props) {
@@ -24,6 +24,12 @@ export function Sidebar({ view, onNavigate }: Props) {
             onClick={() => onNavigate("tasks")}
           >
             <span className={styles.navIcon}>☰</span> Tasks
+          </div>
+          <div
+            className={`${styles.navItem} ${view === "pomodoro" ? styles.active : ""}`}
+            onClick={() => onNavigate("pomodoro")}
+          >
+            <span className={styles.navIcon}>⏱</span> Pomodoro
           </div>
           <div
             className={`${styles.navItem} ${view === "history" ? styles.active : ""}`}
