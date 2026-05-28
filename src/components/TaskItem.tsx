@@ -76,13 +76,6 @@ export function TaskItem({
         {task.isDone && <span className={styles.checkmark}>✓</span>}
       </div>
 
-      <div
-        className={[
-          styles.priorityDot,
-          styles[task.priority],
-        ].filter(Boolean).join(" ")}
-      />
-
       {isEditing ? (
         <input
           ref={editRef}
@@ -107,6 +100,13 @@ export function TaskItem({
       )}
 
       <span className={styles.categoryBadge}>{task.category}</span>
+
+      <div
+        className={[
+          styles.priorityDot,
+          styles[task.priority],
+        ].filter(Boolean).join(" ")}
+      />
 
       <button
         data-testid={`remove-task-btn-${task.id}`}

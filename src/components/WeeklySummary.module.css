@@ -1,4 +1,4 @@
-.container { padding: 2rem 1.5rem; max-width: 680px; width: 100%; }
+.container { padding: 2rem 1.5rem; max-width: 1100px; width: 100%; }
 .header {
   display: flex;
   align-items: center;
@@ -37,197 +37,267 @@
 }
 .loading { padding: 2rem; color: var(--text-muted); }
 
+.body {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
 .chartCard {
-  background: var(--bg-card);
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-solid);
   border-radius: 16px;
   padding: 1.25rem 1.25rem 1rem;
 }
 
-.chart {
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.chartTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chartLegend {
   display: flex;
   gap: 12px;
-  align-items: flex-end;
-  height: 220px;
 }
 
-.dayCol {
-  flex: 1;
+.legendItem {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  height: 100%;
-}
-
-.count {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  min-height: 16px;
-}
-
-.barWrap {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  background: var(--border);
-  opacity: 0.9;
-}
-
-.bar {
-  width: 100%;
-  /* border-radius: 6px 6px 0 0; */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 4px;
-  background: var(--bg-card);
-}
-
-.barEmpty {
-  height: 24px !important;
-  background: transparent;
-  border: 1.5px dashed var(--border);
-  opacity: 0.5;
-}
-
-.low    { background: var(--priority-low); }
-.medium { background: var(--priority-medium); }
-.high   { background: var(--priority-high); }
-
-.label {
+  gap: 5px;
   font-size: 11px;
   color: var(--text-muted);
-  text-align: center;
-  white-space: nowrap;
 }
 
-.dayCol {
-  cursor: pointer;
-  border-radius: 8px 8px 0 0;
-  transition: opacity 0.15s;
-}
-
-.dayCol:hover { opacity: 0.8; }
-
-.dayColSelected .bar:not(.barEmpty) {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.barWrapSelected {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.dayColSelected .label {
-  color: var(--accent);
-  font-weight: 600;
-}
-
-/* ── Task panel ── */
-
-.taskPanel {
-  margin-top: 2rem;
-  border-radius: 12px;
-  background: var(--bg-card);
-  overflow: hidden;
-}
-
-.taskPanelHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
-}
-
-.taskPanelDate {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.taskPanelCount {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.emptyDay {
-  padding: 16px 18px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.taskList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.taskItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 18px;
-  border-bottom: 1px solid var(--border);
-}
-
-.taskBody {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.taskTimes {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.taskTime {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.taskTimeLabel {
-  font-size: 10px;
-  color: var(--text-muted);
-  min-width: 30px;
-  text-align: right;
-}
-
-.taskItem:last-child { border-bottom: none; }
-
-.taskDot {
-  width: 7px;
-  height: 7px;
+.legendDot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
-.taskDot[data-priority="high"]   { background: var(--priority-high); }
-.taskDot[data-priority="medium"] { background: var(--priority-medium); }
-.taskDot[data-priority="low"]    { background: var(--priority-low); }
+.legendWork     { background: #ef9f27; }
+.legendHealth   { background: #5dcaa5; }
+.legendLearning { background: #afa9ec; }
 
-.taskText {
-  font-size: 14px;
-  color: var(--text-primary);
+.chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
+  align-items: end;
+  height: 180px;
+  padding: 0 4px;
+}
+
+.chartDay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  height: 100%;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.chartDay:hover { opacity: 0.8; }
+
+.chartCount {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.chartCountActive {
+  color: #5dcaa5;
+  font-weight: 500;
+}
+
+.chartBar {
+  width: 100%;
+  max-width: 34px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartBarEmpty {
+  height: 3px !important;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.chartBarSelected {
+  max-width: 38px;
+  outline: 1.5px solid rgba(93, 202, 165, 0.5);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
+.chartSeg { background: var(--seg-color); }
+.chartSeg:first-child { border-radius: 5px 5px 0 0; }
+.chartSeg:last-child  { border-radius: 0 0 5px 5px; }
+.chartSeg:only-child  { border-radius: 5px; }
+
+.segHealth   { --seg-color: #5dcaa5; }
+.segLearning { --seg-color: #afa9ec; }
+.segWork     { --seg-color: #ef9f27; }
+.segPersonal { --seg-color: #7B9CCC; }
+
+.chartLabel {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.chartLabelActive {
+  color: #5dcaa5;
+  font-weight: 500;
+}
+
+/* ── Task panel (detail) ── */
+
+.detail {
+  flex: 0 0 360px;
+  background: #15181a;
+  border-radius: 12px;
+  padding: 18px 20px;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.detailHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+
+.detailDate {
+  font-size: 15px;
+  font-weight: 500;
+  color: #f3f3ef;
+}
+
+.detailMeta {
+  font-size: 11px;
+  color: #888780;
+}
+
+.detailProgress {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.detailProgressFill {
+  height: 100%;
+  background: #5dcaa5;
+  border-radius: 4px;
+}
+
+.detailSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  margin-bottom: 11px;
+}
+
+.detailSectionDone    { color: #5dcaa5; }
+.detailSectionPending { color: #f0997b; margin-top: 20px; }
+
+.detailList {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.emptyDay {
+  font-size: 13px;
+  color: #888780;
+  margin: 0;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  /* border-left: 2px solid var(--accent, #888780); */
+}
+
+.taskBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.taskTitle {
+  font-size: 13px;
+  color: #d4d3cd;
+  margin-bottom: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.taskMeta {
-  font-size: 11px;
-  color: var(--text-muted);
-  white-space: nowrap;
+.taskTitleDone {
+  color: #b8b7b1;
+  text-decoration: line-through;
 }
+
+.taskTags {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+}
+
+.taskPriority {
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.taskCategory { color: #6a6a64; }
+
+.taskTime {
+  text-align: right;
+  white-space: nowrap;
+  font-size: 11px;
+  color: #888780;
+}
+
+.taskLow    { --accent: #5dcaa5; --accent-bg: rgba(93, 202, 165, 0.12); }
+.taskMedium { --accent: #ef9f27; --accent-bg: rgba(239, 159, 39,  0.14); }
+.taskHigh   { --accent: #f0997b; --accent-bg: rgba(240, 153, 123, 0.14); }
+
+/* ── Light theme overrides ── */
+:global(:root[data-theme="light"]) .chartCard      { background: #ffffff; }
+:global(:root[data-theme="light"]) .chartCount     { color: rgba(0, 0, 0, 0.4); }
+:global(:root[data-theme="light"]) .chartBarEmpty  { background: rgba(0, 0, 0, 0.08); }
+:global(:root[data-theme="light"]) .chartLabel     { color: rgba(0, 0, 0, 0.5); }
+
+:global(:root[data-theme="light"]) .detail         { background: #ffffff; }
+:global(:root[data-theme="light"]) .detailDate     { color: #1a1a18; }
+:global(:root[data-theme="light"]) .detailMeta     { color: #888880; }
+:global(:root[data-theme="light"]) .detailProgress { background: rgba(0, 0, 0, 0.07); }
+:global(:root[data-theme="light"]) .emptyDay       { color: #888880; }
+:global(:root[data-theme="light"]) .task           { background: rgba(0, 0, 0, 0.03); }
+:global(:root[data-theme="light"]) .taskTitle      { color: #2a2a26; }
+:global(:root[data-theme="light"]) .taskTitleDone  { color: #909088; }
+:global(:root[data-theme="light"]) .taskCategory   { color: #909088; }
+:global(:root[data-theme="light"]) .taskTime       { color: #888880; }

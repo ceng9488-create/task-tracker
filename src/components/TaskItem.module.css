@@ -65,11 +65,11 @@
   line-height: 1;
 }
 
-/* ── Priority dot ──────────────────────────────────────── */
+/* ── Priority bar ──────────────────────────────────────── */
 .priorityDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
   flex-shrink: 0;
   background: var(--priority-low);
 }

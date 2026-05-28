@@ -19,7 +19,12 @@ export interface DayHistory {
   high: number;
   medium: number;
   low: number;
+  health: number;
+  work: number;
+  learning: number;
+  personal: number;
   tasks: HistoryTask[];
+  pendingTasks: HistoryTask[];
 }
 
 export interface HistoryTask {
@@ -28,5 +33,5 @@ export interface HistoryTask {
   priority: Priority;
   category: Category;
   createdAt: string | null;
-  completedAt: string;
+  completedAt: string | null;
 }

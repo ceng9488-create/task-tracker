@@ -1,6 +1,7 @@
 import styles from "./Sidebar.module.css";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
+import { ListChecks, Hourglass, LayoutDashboard } from "lucide-react";
 
 interface Props {
   view: "tasks" | "history" | "pomodoro";
@@ -23,19 +24,19 @@ export function Sidebar({ view, onNavigate }: Props) {
             className={`${styles.navItem} ${view === "tasks" ? styles.active : ""}`}
             onClick={() => onNavigate("tasks")}
           >
-            <span className={styles.navIcon}>☰</span> Tasks
+            <ListChecks size={16} className={styles.navIcon} /> Tasks
           </div>
           <div
             className={`${styles.navItem} ${view === "pomodoro" ? styles.active : ""}`}
             onClick={() => onNavigate("pomodoro")}
           >
-            <span className={styles.navIcon}>⏱</span> Pomodoro
+            <Hourglass size={16} className={styles.navIcon} /> Pomodoro
           </div>
           <div
             className={`${styles.navItem} ${view === "history" ? styles.active : ""}`}
             onClick={() => onNavigate("history")}
           >
-            <span className={styles.navIcon}>📅</span> History
+            <LayoutDashboard size={16} className={styles.navIcon} /> Summary
           </div>
         </nav>
       </div>
