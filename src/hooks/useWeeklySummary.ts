@@ -48,9 +48,9 @@ export function useWeeklySummary(weekOffset: number = 0) {
     Promise.all([completedQ, pendingQ]).then(([{ data: completed }, { data: pending }]) => {
       const map: Record<string, DayHistory> = {};
       for (let i = 0; i < 7; i++) {
-        const d = new Date(monday + "T00:00:00");
+        const d = new Date(monday + "T00:00:00+08:00");
         d.setDate(d.getDate() + i);
-        const key = d.toISOString().slice(0, 10);
+        const key = d.toLocaleDateString("en-CA", { timeZone: TZ });
         map[key] = { date: key, total: 0, high: 0, medium: 0, low: 0, health: 0, work: 0, learning: 0, personal: 0, tasks: [], pendingTasks: [] };
       }
       for (const row of completed ?? []) {

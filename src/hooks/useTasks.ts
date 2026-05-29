@@ -55,7 +55,7 @@ export function useTasks(filter: Filter) {
     supabase
       .from("tasks")
       .select("*")
-      .gte("created_at", todayStart.toISOString())
+      .or(`created_at.gte.${todayStart.toISOString()},is_done.eq.false,completed_at.gte.${todayStart.toISOString()}`)
       .order("position", { ascending: true })
       .then(({ data }) => {
         const loaded = data ? data.map(rowToTask) : [];
@@ -179,11 +179,11 @@ export function useTasks(filter: Filter) {
     (task) => task.priority === "low" && !task.isDone,
   ).length;
 
-  let visible = tasks;
-  if (filter === "Active") visible = tasks.filter((task) => !task.isDone);
-  else if (filter === "Completed") visible = tasks.filter((task) => task.isDone);
-  else if (filter === "High priority")
-    visible = tasks.filter((task) => task.priority === "high" && !task.isDone);
+  const visible =
+    filter === "Active" ? tasks.filter((task) => !task.isDone)
+    : filter === "Completed" ? tasks.filter((task) => task.isDone)
+    : filter === "High priority" ? tasks.filter((task) => task.priority === "high" && !task.isDone)
+    : [...tasks].sort((a, b) => Number(a.isDone) - Number(b.isDone));
 
   return {
     visible,
