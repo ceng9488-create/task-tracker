@@ -2,7 +2,6 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { useTaskManager } from "./hooks/useTaskManager";
 import { StatsGrid } from "./components/StatsGrid";
-import { AddTaskForm } from "./components/AddTaskForm";
 import { FilterBar } from "./components/FilterBar";
 import { TaskList } from "./components/TaskList";
 import { Sidebar } from "./components/Sidebar";
@@ -112,14 +111,11 @@ function LoginPage() {
   );
 }
 
-function TaskTrackerApp() {
+function TaskTrackerApp({ onNavigate }: { onNavigate: (view: "tasks" | "history" | "pomodoro" | "pool") => void }) {
   const {
     tasks,
     visible,
     filter,
-    input,
-    selectedPriority,
-    selectedCategory,
     editId,
     editText,
     dragId,
@@ -138,11 +134,7 @@ function TaskTrackerApp() {
     mediumPriorityCount,
     lowPriorityCount,
     setFilter,
-    setInput,
-    setSelectedPriority,
-    setSelectedCategory,
     setEditText,
-    addTask,
     toggleTask,
     removeTask,
     startEdit,
@@ -190,42 +182,39 @@ function TaskTrackerApp() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.header}>
-        <div className={styles.dateDisplay}>
-          <div className={styles.dateLeft}>
-            <span className={styles.dateMain}>{weekday}, {day} {month}</span>
-            <span className={styles.dateGreeting}>{greeting}, {username}</span>
-          </div>
-          {hasActiveTasks && (
-            <div className={styles.dateSummary}>
-              <span className={styles.dateSummaryDot} data-priority={summaryPriority} />
-              <span className={styles.dateSummaryCount}>{summaryLine}</span>
-            </div>
-          )}
+      {!hasActiveTasks ? (
+        <div className={styles.heroSection}>
+          <p className={styles.heroEyebrow}>{weekday}, {day} {month}</p>
+          <h1 className={styles.heroGreeting}>{greeting}, {username}</h1>
+          <p className={styles.heroSubtitle}>Anything to do today?</p>
+          <button className={styles.heroCta} onClick={() => onNavigate("pool")}>
+            Get from Task Pool →
+          </button>
         </div>
-      </div>
-
-      {hasActiveTasks && (
-        <StatsGrid
-          total={total}
-          doneCount={doneCount}
-          remaining={remaining}
-          pct={pct}
-        />
-      )}
-
-      {/* <AddTaskForm
-        input={input}
-        setInput={setInput}
-        addTask={addTask}
-        selectedPriority={selectedPriority}
-        setSelectedPriority={setSelectedPriority}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      /> */}
-
-      {hasActiveTasks && (
+      ) : (
         <>
+          <div className={styles.header}>
+            <div className={styles.dateDisplay} data-scene={scene}>
+              <div className={styles.dateLeft}>
+                <span className={styles.dateMain}>{weekday}, {day} {month}</span>
+                <span className={styles.dateGreeting}>{greeting}, {username}</span>
+              </div>
+              {summaryLine && (
+                <div className={styles.dateSummary}>
+                  <span className={styles.dateSummaryDot} data-priority={summaryPriority} />
+                  <span className={styles.dateSummaryCount}>{summaryLine}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <StatsGrid
+            total={total}
+            doneCount={doneCount}
+            remaining={remaining}
+            pct={pct}
+          />
+
           <FilterBar activeFilter={filter} onFilterChange={setFilter} />
 
           <TaskList
@@ -276,7 +265,7 @@ function App() {
     <div className={styles.layout}>
       <Sidebar view={view} onNavigate={setView} />
       <div className={styles.main}>
-        {view === "tasks" ? <TaskTrackerApp />
+        {view === "tasks" ? <TaskTrackerApp onNavigate={setView} />
           : view === "pool" ? <TaskPoolPage />
           : view === "pomodoro" ? <PomodoroPage />
           : <WeeklySummary />}

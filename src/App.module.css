@@ -17,6 +17,88 @@
   padding: 2rem 1.5rem;
   color: var(--text-primary);
   text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Hero section (no tasks) ─────────────────────────────── */
+.heroSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroSection::before {
+  content: '';
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.heroEyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 20px;
+  position: relative;
+}
+
+.heroGreeting {
+  font-size: 50px;
+  font-weight: 500;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin: 0 0 20px;
+  position: relative;
+}
+
+.heroSubtitle {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin: 0 0 36px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 32px;
+  border-radius: 50px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.15s;
+  box-shadow: 0 4px 24px color-mix(in srgb, var(--accent) 35%, transparent);
+  position: relative;
+}
+
+.heroCta:hover {
+  background: var(--accent-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.heroCta:active {
+  transform: translateY(-1px);
 }
 
 .header {
