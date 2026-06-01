@@ -1,0 +1,349 @@
+.page {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  letter-spacing: -0.4px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Form card ───────────────────────────────────────────── */
+.formCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formCard.formCardOpen {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.textInput {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.textInput::placeholder { color: var(--text-muted); }
+
+/* ── Expanding options row ───────────────────────────────── */
+.formOptions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 8px 8px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.22s ease, opacity 0.18s ease, padding 0.22s ease;
+}
+
+.formOptions.formOptionsVisible {
+  max-height: 80px;
+  opacity: 1;
+  padding: 4px 8px 6px;
+}
+
+.chipGroup {
+  display: flex;
+  gap: 4px;
+}
+
+.chipDivider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.chip.chipSelected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+/* priority-specific selected colors */
+.chip.p_high.chipSelected   { border-color: var(--priority-high);   background: color-mix(in srgb, var(--priority-high) 12%, transparent);   color: var(--priority-high); }
+.chip.p_medium.chipSelected { border-color: var(--priority-medium); background: color-mix(in srgb, var(--priority-medium) 12%, transparent); color: var(--priority-medium); }
+.chip.p_low.chipSelected    { border-color: var(--priority-low);    background: color-mix(in srgb, var(--priority-low) 12%, transparent);    color: var(--priority-low); }
+
+.addButton {
+  margin-left: auto;
+  padding: 6px 16px;
+  border-radius: 7px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.addButton:hover  { background: var(--accent-hover); }
+.addButton:active { transform: scale(0.97); }
+
+/* ── More options toggle ─────────────────────────────────── */
+.moreToggle {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 4px 0 2px;
+  transition: color 0.15s;
+}
+
+.moreToggle:hover { color: var(--text-secondary); }
+
+/* ── More options panel ──────────────────────────────────── */
+.morePanel {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.22s ease;
+}
+
+.morePanelVisible {
+  max-height: 120px;
+  opacity: 1;
+  padding: 2px 8px 12px;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.optionRow:last-child { margin-bottom: 0; }
+
+.optionLabel {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  min-width: 38px;
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+.empty {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.emptyIcon { font-size: 40px; margin: 0 0 8px; }
+.emptyText { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin: 0 0 4px; }
+.emptyHint { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+/* ── Board / note grid ───────────────────────────────────── */
+.boardSection { width: 100%; }
+
+.count {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.noteGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  align-content: start;
+  justify-items: stretch;
+}
+
+/* ── Sticky note card ────────────────────────────────────── */
+.note {
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+  border-radius: 3px;
+  padding: 10px 12px 10px;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.note::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(0,0,0,0.12);
+}
+
+.note:hover {
+  transform: translateY(-4px);
+  box-shadow: 4px 8px 20px rgba(0,0,0,0.22), 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.note.high   { background: #FFBDBD; }
+.note.medium { background: #FFE082; }
+.note.low    { background: #C8E6C9; }
+
+/* ── Note sections ───────────────────────────────────────── */
+.noteTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.noteCat {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(0,0,0,0.45);
+}
+
+.noteRemove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(0,0,0,0.3);
+  font-size: 12px;
+  padding: 0 2px;
+  line-height: 1;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.noteRemove:hover {
+  color: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.08);
+}
+
+.noteBody {
+  flex: 1;
+  margin-bottom: 8px;
+}
+
+.noteText {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0,0,0,0.75);
+  line-height: 1.45;
+  word-break: break-word;
+  cursor: text;
+  display: block;
+}
+
+.noteEditInput {
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 4px;
+  padding: 3px 6px;
+  color: rgba(0,0,0,0.8);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.noteMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.noteTag {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.08);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.noteFooter {
+  margin-top: auto;
+}
+
+.noteSchedule {
+  width: 100%;
+  padding: 5px 0;
+  border-radius: 5px;
+  border: 1.5px solid rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.35);
+  color: rgba(0,0,0,0.6);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.noteSchedule:hover {
+  background: rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.35);
+  color: rgba(0,0,0,0.8);
+}

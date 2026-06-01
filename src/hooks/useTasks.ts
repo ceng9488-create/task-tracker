@@ -14,6 +14,7 @@ function rowToTask(row: Record<string, unknown>): Task {
     position: row.position as number,
     completedAt: (row.completed_at as string | null) ?? null,
     createdAt: (row.created_at as string | null) ?? null,
+    inPool: (row.in_pool as boolean) ?? false,
   };
 }
 function formatElapsed(ms: number): string {
@@ -55,6 +56,7 @@ export function useTasks(filter: Filter) {
     supabase
       .from("tasks")
       .select("*")
+      .eq("in_pool", false)
       .or(`created_at.gte.${todayStart.toISOString()},is_done.eq.false,completed_at.gte.${todayStart.toISOString()}`)
       .order("position", { ascending: true })
       .then(({ data }) => {

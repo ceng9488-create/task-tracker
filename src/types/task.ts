@@ -1,6 +1,7 @@
 export type Priority = "high" | "medium" | "low";
 export type Category = "Work" | "Health" | "Learning" | "Personal";
 export type Filter = "All" | "Active" | "Completed" | "High priority";
+export type Recurring = "none" | "everyday" | "odd" | "even";
 
 export interface Task {
   id: number;
@@ -11,6 +12,9 @@ export interface Task {
   position: number;
   completedAt: string | null;
   createdAt: string | null;
+  inPool: boolean;
+  timerMinutes?: number | null;
+  recurring?: Recurring;
 }
 
 export interface DayHistory {

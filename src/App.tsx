@@ -11,6 +11,7 @@ import { useAuth } from "./context/AuthContext";
 import { WeeklySummary } from "./components/WeeklySummary";
 import { CompletionPopup } from "./components/CompletionPopup";
 import { PomodoroPage } from "./components/PomodoroPage";
+import { TaskPoolPage } from "./components/TaskPoolPage";
 
 
 const DEV_EMAIL = import.meta.env.VITE_DEV_EMAIL as string | undefined;
@@ -213,7 +214,7 @@ function TaskTrackerApp() {
         />
       )}
 
-      <AddTaskForm
+      {/* <AddTaskForm
         input={input}
         setInput={setInput}
         addTask={addTask}
@@ -221,7 +222,7 @@ function TaskTrackerApp() {
         setSelectedPriority={setSelectedPriority}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-      />
+      /> */}
 
       {hasActiveTasks && (
         <>
@@ -267,7 +268,7 @@ function TaskTrackerApp() {
 }
 function App() {
   const { session, loading } = useAuth();
-  const [view, setView] = useState<"tasks" | "history" | "pomodoro">("tasks");
+  const [view, setView] = useState<"tasks" | "history" | "pomodoro" | "pool">("tasks");
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (!session) return <LoginPage />;
@@ -276,6 +277,7 @@ function App() {
       <Sidebar view={view} onNavigate={setView} />
       <div className={styles.main}>
         {view === "tasks" ? <TaskTrackerApp />
+          : view === "pool" ? <TaskPoolPage />
           : view === "pomodoro" ? <PomodoroPage />
           : <WeeklySummary />}
       </div>

@@ -1,11 +1,11 @@
 import styles from "./Sidebar.module.css";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
-import { ListChecks, Hourglass, LayoutDashboard } from "lucide-react";
+import { ListChecks, Hourglass, LayoutDashboard, Archive } from "lucide-react";
 
 interface Props {
-  view: "tasks" | "history" | "pomodoro";
-  onNavigate: (v: "tasks" | "history" | "pomodoro") => void;
+  view: "tasks" | "history" | "pomodoro" | "pool";
+  onNavigate: (v: "tasks" | "history" | "pomodoro" | "pool") => void;
 }
 
 export function Sidebar({ view, onNavigate }: Props) {
@@ -25,6 +25,12 @@ export function Sidebar({ view, onNavigate }: Props) {
             onClick={() => onNavigate("tasks")}
           >
             <ListChecks size={16} className={styles.navIcon} /> Tasks
+          </div>
+          <div
+            className={`${styles.navItem} ${view === "pool" ? styles.active : ""}`}
+            onClick={() => onNavigate("pool")}
+          >
+            <Archive size={16} className={styles.navIcon} /> Task Pool
           </div>
           <div
             className={`${styles.navItem} ${view === "pomodoro" ? styles.active : ""}`}
