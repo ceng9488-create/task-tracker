@@ -43,13 +43,14 @@ export function TaskItem({
 }: Props): ReactElement {
   const containerClass = [
     styles.container,
-    isEditing      && styles.editing,
-    isDragging     && styles.isDragging,
-    isDragOver     && styles.isDragOver,
-    isRemoving     && styles.isRemoving,
-    task.isDone    && styles.done,
-    isJustAdded    && styles.isJustAdded,
-    isJustCompleted && styles.isJustCompleted,
+    isEditing        && styles.editing,
+    isDragging       && styles.isDragging,
+    isDragOver       && styles.isDragOver,
+    isRemoving       && styles.isRemoving,
+    task.isDone      && styles.done,
+    task.isInProgress && styles.inProgress,
+    isJustAdded      && styles.isJustAdded,
+    isJustCompleted  && styles.isJustCompleted,
   ].filter(Boolean).join(" ");
 
   return (
@@ -69,12 +70,14 @@ export function TaskItem({
         onClick={() => { if (!task.isDone) onToggle(task.id); }}
         className={[
           styles.checkbox,
-          task.isDone     && styles.done,
-          task.isDone     && styles.locked,
-          isJustCompleted && styles.completing,
+          task.isDone       && styles.done,
+          task.isDone       && styles.locked,
+          task.isInProgress && styles.inProgress,
+          isJustCompleted   && styles.completing,
         ].filter(Boolean).join(" ")}
       >
-        {task.isDone && <span className={styles.checkmark}>✓</span>}
+        {task.isDone      && <span className={styles.checkmark}>✓</span>}
+        {task.isInProgress && <span className={styles.progressMark}>▶</span>}
       </div>
 
       {isEditing ? (
@@ -93,7 +96,7 @@ export function TaskItem({
       ) : (
         <span
           onDoubleClick={() => { if (!task.isDone) onEditStart(task); }}
-          className={`${styles.taskText} ${task.isDone ? styles.done : ""}`}
+          className={[styles.taskText, task.isDone ? styles.done : task.isInProgress ? styles.inProgress : ""].filter(Boolean).join(" ")}
           title={task.isDone ? "Completed" : "Double-click to edit"}
         >
           {task.text}

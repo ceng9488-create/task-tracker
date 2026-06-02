@@ -11,12 +11,14 @@ function rowToTask(row: Record<string, unknown>): Task {
     priority: row.priority as Task["priority"],
     category: row.category as Task["category"],
     isDone: row.is_done as boolean,
+    isInProgress: (row.is_in_progress as boolean) ?? false,
     position: row.position as number,
     completedAt: (row.completed_at as string | null) ?? null,
     createdAt: (row.created_at as string | null) ?? null,
     inPool: (row.in_pool as boolean) ?? false,
   };
 }
+
 function formatElapsed(ms: number): string {
   const s = Math.floor(ms / 1000);
   if (s < 60) return `${s}s`;
@@ -83,6 +85,7 @@ export function useTasks(filter: Filter) {
           priority,
           category,
           is_done: false,
+          is_in_progress: false,
           in_pool: false,
           user_id: session.user.id,
           position: maxPosition + 1,
@@ -105,9 +108,17 @@ export function useTasks(filter: Filter) {
 
   const toggleTask = useCallback(
     async (id: number) => {
-      const task = tasks.find((task) => task.id === id);
-      if (!task) return;
-      if (task && !task.isDone) {
+      const task = tasks.find((t) => t.id === id);
+      if (!task || task.isDone) return;
+
+      if (!task.isInProgress) {
+        // pending → in progress
+        setTasks((prev) =>
+          prev.map((t) => (t.id === id ? { ...t, isInProgress: true } : t)),
+        );
+        await supabase.from("tasks").update({ is_in_progress: true }).eq("id", id);
+      } else {
+        // in progress → done
         setJustCompleted(id);
         setTimeout(() => setJustCompleted(null), ANIMATION_DURATION_MS.COMPLETION_CELEBRATE);
 
@@ -118,26 +129,18 @@ export function useTasks(filter: Filter) {
           setTimeout(() => setCompletionPopup(null), 4000);
           delete startTimesRef.current[id];
         }
-      } else if (task?.isDone) {
-        startTimesRef.current[id] = Date.now();
+
+        const completedAt = new Date().toISOString();
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === id ? { ...t, isDone: true, isInProgress: false, completedAt } : t,
+          ),
+        );
+        await supabase
+          .from("tasks")
+          .update({ is_done: true, is_in_progress: false, completed_at: completedAt })
+          .eq("id", id);
       }
-      setTasks((previousTasks) =>
-        previousTasks.map((task) =>
-          task.id === id
-            ? {
-                ...task,
-                isDone: !task.isDone,
-                completedAt: !task.isDone ? new Date().toISOString() : null,
-              }
-            : task,
-        ),
-      );
-      const nowDone = !task.isDone;
-      const completedAt = nowDone ? new Date().toISOString() : null;
-      await supabase
-        .from("tasks")
-        .update({ is_done: nowDone, completed_at: completedAt })
-        .eq("id", id);
     },
     [tasks],
   );
@@ -183,10 +186,14 @@ export function useTasks(filter: Filter) {
   ).length;
 
   const visible =
-    filter === "Active" ? tasks.filter((task) => !task.isDone)
-    : filter === "Completed" ? tasks.filter((task) => task.isDone)
-    : filter === "High priority" ? tasks.filter((task) => task.priority === "high" && !task.isDone)
-    : [...tasks].sort((a, b) => Number(a.isDone) - Number(b.isDone));
+    filter === "Pending"      ? tasks.filter((t) => !t.isDone && !t.isInProgress)
+    : filter === "In Progress" ? tasks.filter((t) => !t.isDone && t.isInProgress)
+    : filter === "Completed"   ? tasks.filter((t) => t.isDone)
+    : filter === "High priority" ? tasks.filter((t) => t.priority === "high" && !t.isDone)
+    : [...tasks].sort((a, b) => {
+        const order = (t: Task) => (t.isDone ? 2 : t.isInProgress ? 1 : 0);
+        return order(a) - order(b);
+      });
 
   return {
     visible,

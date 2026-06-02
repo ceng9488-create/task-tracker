@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { ReactElement } from "react";
 import { useTaskPool } from "../hooks/useTaskPool";
 import { CATEGORY_OPTIONS, PRIORITY_OPTIONS } from "../const/task";
@@ -33,6 +33,32 @@ export function TaskPoolPage(): ReactElement {
   const [showMore, setShowMore] = useState(false);
   const [timerMinutes, setTimerMinutes] = useState<number | null>(null);
   const [recurring, setRecurring] = useState<Recurring>("none");
+  const [showForm, setShowForm] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const hasAnyTask = !loading && tasks.length > 0;
+  const isSingleTask = !loading && tasks.length === 1;
+
+  useEffect(() => {
+    if (!hasAnyTask) setShowForm(false);
+  }, [hasAnyTask]);
+
+  useEffect(() => {
+    if (!showForm) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (formRef.current && !formRef.current.contains(e.target as Node)) {
+        setShowForm(false);
+        setInput("");
+        setPriority("medium");
+        setCategory("Work");
+        setTimerMinutes(null);
+        setRecurring("none");
+        setShowMore(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showForm]);
 
   function handleAdd() {
     if (!input.trim()) return;
@@ -43,6 +69,7 @@ export function TaskPoolPage(): ReactElement {
     setTimerMinutes(null);
     setRecurring("none");
     setShowMore(false);
+    setShowForm(false);
   }
 
   function startEdit(id: number, text: string) {
@@ -61,98 +88,106 @@ export function TaskPoolPage(): ReactElement {
   const showOptions = focused || input.length > 0;
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Task Pool</h2>
-        <p className={styles.subtitle}>Backlog of tasks to schedule when ready</p>
-      </div>
-
-      <div className={[styles.formCard, showOptions ? styles.formCardOpen : ""].join(" ")}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-          onFocus={() => setFocused(true)}
-          onBlur={() => { setFocused(false); setShowMore(false); }}
-          placeholder="Add a task to the pool..."
-          className={styles.textInput}
-        />
-
-        <div className={[styles.formOptions, showOptions ? styles.formOptionsVisible : ""].join(" ")}>
-          <div className={styles.chipGroup}>
-            {PRIORITY_OPTIONS.map((p) => (
-              <button
-                key={p}
-                onMouseDown={(e) => { e.preventDefault(); setPriority(p); }}
-                className={[styles.chip, styles[`p_${p}`], priority === p ? styles.chipSelected : ""].join(" ")}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-
-          <div className={styles.chipDivider} />
-
-          <div className={styles.chipGroup}>
-            {CATEGORY_OPTIONS.map((c) => (
-              <button
-                key={c}
-                onMouseDown={(e) => { e.preventDefault(); setCategory(c); }}
-                className={[styles.chip, category === c ? styles.chipSelected : ""].join(" ")}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onMouseDown={(e) => { e.preventDefault(); handleAdd(); }}
-            className={styles.addButton}
-          >
-            + Add
-          </button>
-
-          <button
-            className={styles.moreToggle}
-            onMouseDown={(e) => { e.preventDefault(); setShowMore((v) => !v); }}
-          >
-            {showMore ? "▴ less" : "▾ more options"}
-          </button>
+    <div className={[styles.page, hasAnyTask ? styles.pageCompact : ""].filter(Boolean).join(" ")}>
+      {!hasAnyTask && (
+        <div className={styles.header}>
+          <h2 className={styles.title}>Task Pool</h2>
+          <p className={styles.subtitle}>Backlog of tasks to schedule when ready</p>
         </div>
+      )}
 
-        <div className={[styles.morePanel, showOptions && showMore ? styles.morePanelVisible : ""].join(" ")}>
-          <div className={styles.optionRow}>
-            <span className={styles.optionLabel}>Timer</span>
+      {hasAnyTask && !showForm ? (
+        <button className={styles.addCompactBtn} onClick={() => setShowForm(true)}>
+          + Add task
+        </button>
+      ) : (
+        <div ref={formRef} className={[styles.formCard, showOptions ? styles.formCardOpen : ""].join(" ")}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+            onFocus={() => setFocused(true)}
+            onBlur={() => { setFocused(false); setShowMore(false); }}
+            placeholder="Add a task to the pool..."
+            className={styles.textInput}
+          />
+
+          <div className={[styles.formOptions, showOptions ? styles.formOptionsVisible : ""].join(" ")}>
             <div className={styles.chipGroup}>
-              {TIMER_OPTIONS.map(({ value, label }) => (
+              {PRIORITY_OPTIONS.map((p) => (
                 <button
-                  key={label}
-                  onMouseDown={(e) => { e.preventDefault(); setTimerMinutes(value); }}
-                  className={[styles.chip, timerMinutes === value ? styles.chipSelected : ""].join(" ")}
+                  key={p}
+                  onMouseDown={(e) => { e.preventDefault(); setPriority(p); }}
+                  className={[styles.chip, styles[`p_${p}`], priority === p ? styles.chipSelected : ""].join(" ")}
                 >
-                  {label}
+                  {p}
                 </button>
               ))}
             </div>
-          </div>
 
-          <div className={styles.optionRow}>
-            <span className={styles.optionLabel}>Repeat</span>
+            <div className={styles.chipDivider} />
+
             <div className={styles.chipGroup}>
-              {RECURRING_OPTIONS.map(({ value, label }) => (
+              {CATEGORY_OPTIONS.map((c) => (
                 <button
-                  key={value}
-                  onMouseDown={(e) => { e.preventDefault(); setRecurring(value); }}
-                  className={[styles.chip, recurring === value ? styles.chipSelected : ""].join(" ")}
+                  key={c}
+                  onMouseDown={(e) => { e.preventDefault(); setCategory(c); }}
+                  className={[styles.chip, category === c ? styles.chipSelected : ""].join(" ")}
                 >
-                  {label}
+                  {c}
                 </button>
               ))}
             </div>
+
+            <button
+              onMouseDown={(e) => { e.preventDefault(); handleAdd(); }}
+              className={styles.addButton}
+            >
+              + Add
+            </button>
+
+            <button
+              className={styles.moreToggle}
+              onMouseDown={(e) => { e.preventDefault(); setShowMore((v) => !v); }}
+            >
+              {showMore ? "▴ less" : "▾ more options"}
+            </button>
+          </div>
+
+          <div className={[styles.morePanel, showOptions && showMore ? styles.morePanelVisible : ""].join(" ")}>
+            <div className={styles.optionRow}>
+              <span className={styles.optionLabel}>Timer</span>
+              <div className={styles.chipGroup}>
+                {TIMER_OPTIONS.map(({ value, label }) => (
+                  <button
+                    key={label}
+                    onMouseDown={(e) => { e.preventDefault(); setTimerMinutes(value); }}
+                    className={[styles.chip, timerMinutes === value ? styles.chipSelected : ""].join(" ")}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.optionRow}>
+              <span className={styles.optionLabel}>Repeat</span>
+              <div className={styles.chipGroup}>
+                {RECURRING_OPTIONS.map(({ value, label }) => (
+                  <button
+                    key={value}
+                    onMouseDown={(e) => { e.preventDefault(); setRecurring(value); }}
+                    className={[styles.chip, recurring === value ? styles.chipSelected : ""].join(" ")}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {loading ? (
         <p className={styles.empty}>Loading...</p>
@@ -164,8 +199,13 @@ export function TaskPoolPage(): ReactElement {
         </div>
       ) : (
         <div className={styles.boardSection}>
-          <p className={styles.count}>{tasks.length} task{tasks.length !== 1 ? "s" : ""} in pool</p>
-          <div className={styles.noteGrid}>
+          {!isSingleTask && (
+            <p className={styles.count}>{tasks.length} tasks in pool</p>
+          )}
+          <div className={[
+            styles.noteGrid,
+            isSingleTask ? styles.noteGridSingle : styles.noteGridMulti,
+          ].join(" ")}>
             {tasks.map((task) => (
               <div key={task.id} className={[styles.note, styles[task.priority]].join(" ")}>
                 <div className={styles.noteTop}>

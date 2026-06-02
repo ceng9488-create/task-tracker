@@ -47,9 +47,11 @@ export function TaskList({
             ? "Nothing completed yet — keep going!"
             : activeFilter === "High priority"
               ? "No high priority tasks — smooth sailing"
-              : activeFilter === "Active"
+              : activeFilter === "Pending"
                 ? "All done for today!"
-                : "No tasks here — time to add some!"}
+                : activeFilter === "In Progress"
+                  ? "Nothing in progress right now"
+                  : "No tasks here — time to add some!"}
         </div>
       )}
       {visible.map((task) => (

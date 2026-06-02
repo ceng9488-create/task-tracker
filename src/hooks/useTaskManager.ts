@@ -5,7 +5,7 @@ import { useTaskEdit } from "./useTaskEdit";
 import { useDragAndDrop } from "./useDragAndDrop";
 
 export function useTaskManager() {
-  const [filter, setFilter] = useState<Filter>("Active");
+  const [filter, setFilter] = useState<Filter>("Pending");
   const [input, setInput] = useState("");
   const [selectedPriority, setSelectedPriority] = useState<Priority>("medium");
   const [selectedCategory, setSelectedCategory] = useState<Category>("Work");

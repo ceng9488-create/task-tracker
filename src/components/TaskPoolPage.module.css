@@ -29,6 +29,41 @@
   margin: 0;
 }
 
+/* ── Compact layout (any non-empty pool) ─────────────────── */
+.pageCompact {
+  justify-content: flex-start;
+}
+
+.addCompactBtn {
+  align-self: flex-start;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px dashed var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 1.5rem;
+}
+
+.addCompactBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+.noteGridSingle {
+  grid-template-columns: 180px;
+  justify-content: flex-start;
+}
+
+.noteGridMulti {
+  grid-template-columns: repeat(auto-fill, 180px);
+  justify-content: flex-start;
+}
+
 /* ── Form card ───────────────────────────────────────────── */
 .formCard {
   background: var(--bg-card);

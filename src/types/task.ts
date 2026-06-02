@@ -1,6 +1,6 @@
 export type Priority = "high" | "medium" | "low";
 export type Category = "Work" | "Health" | "Learning" | "Personal";
-export type Filter = "All" | "Active" | "Completed" | "High priority";
+export type Filter = "All" | "Pending" | "In Progress" | "Completed" | "High priority";
 export type Recurring = "none" | "everyday" | "odd" | "even";
 
 export interface Task {
@@ -9,6 +9,7 @@ export interface Task {
   priority: Priority;
   category: Category;
   isDone: boolean;
+  isInProgress: boolean;
   position: number;
   completedAt: string | null;
   createdAt: string | null;

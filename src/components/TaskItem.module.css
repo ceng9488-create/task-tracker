@@ -23,6 +23,7 @@
 .container.editing      { cursor: text; }
 .container.isDragging   { opacity: 0.4; }
 .container.done         { opacity: 0.45; }
+.container.inProgress   { border-left: 3px solid var(--accent); }
 .container.isRemoving   { opacity: 0; transform: translateX(40px); }
 .container.isDragOver   { 
   background: var(--bg-card-hover); 
@@ -56,13 +57,20 @@
   transform: scale(1);
 }
 
-.checkbox.done      { background: var(--accent); border: none; }
-.checkbox.locked    { cursor: default; }
+.checkbox.done       { background: var(--accent); border: none; }
+.checkbox.locked     { cursor: default; }
+.checkbox.inProgress { border: 2px dashed var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
 .checkbox.completing { transform: scale(1.3); }
 
 .checkmark {
   color: #fff;
   font-size: 13px;
+  line-height: 1;
+}
+
+.progressMark {
+  color: var(--accent);
+  font-size: 9px;
   line-height: 1;
 }
 
@@ -87,7 +95,8 @@
   transition: color 0.2s;
 }
 
-.taskText.done { text-decoration: line-through; color: var(--text-muted); cursor: default; }
+.taskText.done       { text-decoration: line-through; color: var(--text-muted); cursor: default; }
+.taskText.inProgress { color: var(--accent); }
 
 /* ── Edit input ────────────────────────────────────────── */
 .editInput {
