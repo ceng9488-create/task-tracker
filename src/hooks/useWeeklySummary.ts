@@ -34,6 +34,7 @@ export function useWeeklySummary(weekOffset: number = 0) {
     const completedQ = supabase
       .from("tasks")
       .select("id, text, priority, category, created_at, completed_at")
+      .eq("in_pool", false)
       .gte("completed_at", from)
       .lte("completed_at", to)
       .order("completed_at", { ascending: false });
@@ -41,6 +42,7 @@ export function useWeeklySummary(weekOffset: number = 0) {
     const pendingQ = supabase
       .from("tasks")
       .select("id, text, priority, category, created_at, completed_at")
+      .eq("in_pool", false)
       .gte("created_at", from)
       .lte("created_at", to)
       .eq("is_done", false);

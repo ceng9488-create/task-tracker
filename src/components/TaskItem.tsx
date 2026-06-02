@@ -66,10 +66,11 @@ export function TaskItem({
 
       <div
         data-testid={`toggle-task-btn-${task.id}`}
-        onClick={() => onToggle(task.id)}
+        onClick={() => { if (!task.isDone) onToggle(task.id); }}
         className={[
           styles.checkbox,
           task.isDone     && styles.done,
+          task.isDone     && styles.locked,
           isJustCompleted && styles.completing,
         ].filter(Boolean).join(" ")}
       >
@@ -91,9 +92,9 @@ export function TaskItem({
         />
       ) : (
         <span
-          onDoubleClick={() => onEditStart(task)}
+          onDoubleClick={() => { if (!task.isDone) onEditStart(task); }}
           className={`${styles.taskText} ${task.isDone ? styles.done : ""}`}
-          title="Double-click to edit"
+          title={task.isDone ? "Completed" : "Double-click to edit"}
         >
           {task.text}
         </span>

@@ -83,6 +83,7 @@ export function useTasks(filter: Filter) {
           priority,
           category,
           is_done: false,
+          in_pool: false,
           user_id: session.user.id,
           position: maxPosition + 1,
         })

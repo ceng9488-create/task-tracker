@@ -57,6 +57,7 @@
 }
 
 .checkbox.done      { background: var(--accent); border: none; }
+.checkbox.locked    { cursor: default; }
 .checkbox.completing { transform: scale(1.3); }
 
 .checkmark {
@@ -86,7 +87,7 @@
   transition: color 0.2s;
 }
 
-.taskText.done { text-decoration: line-through; color: var(--text-muted); }
+.taskText.done { text-decoration: line-through; color: var(--text-muted); cursor: default; }
 
 /* ── Edit input ────────────────────────────────────────── */
 .editInput {
