@@ -242,8 +242,7 @@ function TaskTrackerApp({ onNavigate }: { onNavigate: (view: "tasks" | "history"
           />
 
           <div className={styles.hint}>
-            <span className={styles.hintKey}>Enter</span> to add
-            <span className={styles.hintDivider}>·</span>
+            
             <span className={styles.hintKey}>Double-click</span> to edit
             <span className={styles.hintDivider}>·</span>
             <span className={styles.hintKey}>Drag</span> to reorder

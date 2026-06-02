@@ -16,6 +16,7 @@ function rowToTask(row: Record<string, unknown>): Task {
     inPool: true,
     timerMinutes: (row.timer_minutes as number | null) ?? null,
     recurring: ((row.recurring as string) ?? "none") as Task["recurring"],
+    isInProgress: row.isInProgress as boolean
   };
 }
 

@@ -92,7 +92,7 @@ export function TaskPoolPage(): ReactElement {
       {!hasAnyTask && (
         <div className={styles.header}>
           <h2 className={styles.title}>Task Pool</h2>
-          <p className={styles.subtitle}>Backlog of tasks to schedule when ready</p>
+          <p className={styles.subtitle}>Your idea space — capture anything, schedule when ready</p>
         </div>
       )}
 
@@ -192,10 +192,20 @@ export function TaskPoolPage(): ReactElement {
       {loading ? (
         <p className={styles.empty}>Loading...</p>
       ) : tasks.length === 0 ? (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyIcon}>📋</p>
-          <p className={styles.emptyText}>Your pool is empty</p>
-          <p className={styles.emptyHint}>Add tasks here to store them for later</p>
+        <div className={styles.instructions}>
+          <p className={styles.instructionTitle}>What's on your mind?</p>
+          <p className={styles.instructionDesc}>
+            This is your personal idea space — no schedule, no pressure.
+            Capture anything you want to do, try, or remember.
+          </p>
+          <div className={styles.instructionHints}>
+            <span className={styles.instructionHint}>🎯 Tasks for today</span>
+            <span className={styles.instructionHint}>🔁 Habits to build</span>
+            <span className={styles.instructionHint}>💡 Ideas & goals</span>
+          </div>
+          <p className={styles.instructionFooter}>
+            Pick any task and hit <strong>Do it NOW!</strong> whenever you're ready to work on it.
+          </p>
         </div>
       ) : (
         <div className={styles.boardSection}>
@@ -251,7 +261,7 @@ export function TaskPoolPage(): ReactElement {
 
                 <div className={styles.noteFooter}>
                   <button className={styles.noteSchedule} onClick={() => scheduleForToday(task.id)}>
-                    + Today
+                    Do it NOW!
                   </button>
                 </div>
               </div>

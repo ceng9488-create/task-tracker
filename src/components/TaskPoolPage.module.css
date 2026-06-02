@@ -224,14 +224,54 @@
   font-size: 14px;
 }
 
-.emptyState {
-  text-align: center;
-  padding: 3rem 1rem;
+/* ── Instructions card (shown when pool is empty) ────────── */
+.instructions {
+  margin-top: 0.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
 }
 
-.emptyIcon { font-size: 40px; margin: 0 0 8px; }
-.emptyText { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin: 0 0 4px; }
-.emptyHint { font-size: 13px; color: var(--text-muted); margin: 0; }
+.instructionTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+  letter-spacing: -0.3px;
+}
+
+.instructionDesc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0 0 16px;
+}
+
+.instructionHints {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.instructionHint {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.instructionFooter {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.instructionFooter strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
 
 /* ── Board / note grid ───────────────────────────────────── */
 .boardSection { width: 100%; }
