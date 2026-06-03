@@ -121,6 +121,7 @@ function TaskTrackerApp({ onNavigate }: { onNavigate: (view: "tasks" | "history"
     dragId,
     dragOverId,
     justCompleted,
+    justStarted,
     removing,
     justAdded,
     completionPopup,
@@ -239,6 +240,7 @@ function TaskTrackerApp({ onNavigate }: { onNavigate: (view: "tasks" | "history"
             removing={removing}
             justAdded={justAdded}
             justCompleted={justCompleted}
+            justStarted={justStarted}
           />
 
           <div className={styles.hint}>

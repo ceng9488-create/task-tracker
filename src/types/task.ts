@@ -1,6 +1,6 @@
 export type Priority = "high" | "medium" | "low";
 export type Category = "Work" | "Health" | "Learning" | "Personal";
-export type Filter = "All" | "Pending" | "In Progress" | "Completed" | "High priority";
+export type Filter = "All" | "Pending" | "In Progress" | "Completed";
 export type Recurring = "none" | "everyday" | "odd" | "even";
 
 export interface Task {

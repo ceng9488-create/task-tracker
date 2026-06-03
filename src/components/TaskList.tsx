@@ -29,6 +29,7 @@ interface Props {
   removing: number | null;
   justAdded: number | null;
   justCompleted: number | null;
+  justStarted: number | null;
 }
 
 export function TaskList({
@@ -37,7 +38,7 @@ export function TaskList({
   onEditStart, onEditConfirm, onEditTextChange, onEditCancel,
   onToggle, onRemove,
   dragId, dragOverId, onDragStart, onDragOver, onDrop, onDragEnd,
-  removing, justAdded, justCompleted,
+  removing, justAdded, justCompleted, justStarted,
 }: Props): ReactElement {
   return (
     <div ref={listRef} className={styles.list}>
@@ -45,8 +46,6 @@ export function TaskList({
         <div className={styles.empty}>
           {activeFilter === "Completed"
             ? "Nothing completed yet — keep going!"
-            : activeFilter === "High priority"
-              ? "No high priority tasks — smooth sailing"
               : activeFilter === "Pending"
                 ? "All done for today!"
                 : activeFilter === "In Progress"
@@ -76,6 +75,7 @@ export function TaskList({
           isRemoving={removing === task.id}
           isJustAdded={justAdded === task.id}
           isJustCompleted={justCompleted === task.id}
+          isJustStarted={justStarted === task.id}
         />
       ))}
     </div>

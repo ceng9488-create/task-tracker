@@ -30,6 +30,7 @@ interface Props {
   isRemoving: boolean;
   isJustAdded: boolean;
   isJustCompleted: boolean;
+  isJustStarted: boolean;
 }
 
 export function TaskItem({
@@ -39,7 +40,7 @@ export function TaskItem({
   onToggle, onRemove,
   isDragging, isDragOver,
   onDragStart, onDragOver, onDrop, onDragEnd,
-  isRemoving, isJustAdded, isJustCompleted,
+  isRemoving, isJustAdded, isJustCompleted, isJustStarted,
 }: Props): ReactElement {
   const containerClass = [
     styles.container,
@@ -47,10 +48,11 @@ export function TaskItem({
     isDragging       && styles.isDragging,
     isDragOver       && styles.isDragOver,
     isRemoving       && styles.isRemoving,
-    task.isDone      && styles.done,
+    task.isDone       && styles.done,
     task.isInProgress && styles.inProgress,
-    isJustAdded      && styles.isJustAdded,
-    isJustCompleted  && styles.isJustCompleted,
+    isJustAdded       && styles.isJustAdded,
+    isJustCompleted   && styles.isJustCompleted,
+    isJustStarted     && styles.isJustStarted,
   ].filter(Boolean).join(" ");
 
   return (

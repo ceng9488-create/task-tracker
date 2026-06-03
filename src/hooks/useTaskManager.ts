@@ -5,7 +5,7 @@ import { useTaskEdit } from "./useTaskEdit";
 import { useDragAndDrop } from "./useDragAndDrop";
 
 export function useTaskManager() {
-  const [filter, setFilter] = useState<Filter>("Pending");
+  const [filter, setFilter] = useState<Filter>("All");
   const [input, setInput] = useState("");
   const [selectedPriority, setSelectedPriority] = useState<Priority>("medium");
   const [selectedCategory, setSelectedCategory] = useState<Category>("Work");
@@ -13,7 +13,7 @@ export function useTaskManager() {
 
   const {
     tasks, visible,
-    justCompleted, removing, justAdded, completionPopup,
+    justCompleted, justStarted, removing, justAdded, completionPopup,
     total, doneCount, remaining, pct,
     highPriorityCount, mediumPriorityCount, lowPriorityCount,
     addTask: addTaskToList, toggleTask, removeTask,
@@ -42,7 +42,7 @@ export function useTaskManager() {
     input, selectedPriority, selectedCategory, listRef,
     editId, editText, editRef,
     dragId, dragOverId,
-    justCompleted, removing, justAdded, completionPopup,
+    justCompleted, justStarted, removing, justAdded, completionPopup,
     total, doneCount, remaining, pct,
     highPriorityCount, mediumPriorityCount, lowPriorityCount,
     setFilter, setInput, setSelectedPriority, setSelectedCategory,

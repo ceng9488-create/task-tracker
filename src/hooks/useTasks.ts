@@ -31,8 +31,9 @@ function formatElapsed(ms: number): string {
 }
 
 export interface CompletionPopup {
+  type: "started" | "completed";
   taskText: string;
-  elapsed: string;
+  elapsed?: string;
 }
 
 export function useTasks(filter: Filter) {
@@ -40,6 +41,7 @@ export function useTasks(filter: Filter) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [, setLoading] = useState(true);
   const [justCompleted, setJustCompleted] = useState<number | null>(null);
+  const [justStarted, setJustStarted] = useState<number | null>(null);
   const [removing, setRemoving] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState<number | null>(null);
   const [completionPopup, setCompletionPopup] = useState<CompletionPopup | null>(null);
@@ -65,7 +67,7 @@ export function useTasks(filter: Filter) {
         const loaded = data ? data.map(rowToTask) : [];
         const now = Date.now();
         for (const t of loaded) {
-          if (!t.isDone) startTimesRef.current[t.id] = now;
+          if (t.isInProgress) startTimesRef.current[t.id] = now;
         }
         setTasks(loaded);
         setLoading(false);
@@ -112,11 +114,17 @@ export function useTasks(filter: Filter) {
       if (!task || task.isDone) return;
 
       if (!task.isInProgress) {
-        // pending → in progress
+        // pending → in progress: record exact start time
+        startTimesRef.current[id] = Date.now();
+        setJustStarted(id);
+        setTimeout(() => setJustStarted(null), 700);
+        setCompletionPopup({ type: "started", taskText: task.text });
+        setTimeout(() => setCompletionPopup(null), 3000);
         setTasks((prev) =>
           prev.map((t) => (t.id === id ? { ...t, isInProgress: true } : t)),
         );
-        await supabase.from("tasks").update({ is_in_progress: true }).eq("id", id);
+        const { error: startErr } = await supabase.from("tasks").update({ is_in_progress: true }).eq("id", id);
+        if (startErr) console.error("Failed to save in-progress state:", startErr.message);
       } else {
         // in progress → done
         setJustCompleted(id);
@@ -125,7 +133,7 @@ export function useTasks(filter: Filter) {
         const startTime = startTimesRef.current[id];
         if (startTime) {
           const elapsed = formatElapsed(Date.now() - startTime);
-          setCompletionPopup({ taskText: task.text, elapsed });
+          setCompletionPopup({ type: "completed", taskText: task.text, elapsed });
           setTimeout(() => setCompletionPopup(null), 4000);
           delete startTimesRef.current[id];
         }
@@ -136,10 +144,11 @@ export function useTasks(filter: Filter) {
             t.id === id ? { ...t, isDone: true, isInProgress: false, completedAt } : t,
           ),
         );
-        await supabase
+        const { error: doneErr } = await supabase
           .from("tasks")
           .update({ is_done: true, is_in_progress: false, completed_at: completedAt })
           .eq("id", id);
+        if (doneErr) console.error("Failed to save completed state:", doneErr.message);
       }
     },
     [tasks],
@@ -189,7 +198,6 @@ export function useTasks(filter: Filter) {
     filter === "Pending"      ? tasks.filter((t) => !t.isDone && !t.isInProgress)
     : filter === "In Progress" ? tasks.filter((t) => !t.isDone && t.isInProgress)
     : filter === "Completed"   ? tasks.filter((t) => t.isDone)
-    : filter === "High priority" ? tasks.filter((t) => t.priority === "high" && !t.isDone)
     : [...tasks].sort((a, b) => {
         const order = (t: Task) => (t.isDone ? 2 : t.isInProgress ? 1 : 0);
         return order(a) - order(b);
@@ -200,6 +208,7 @@ export function useTasks(filter: Filter) {
     tasks,
     setTasks,
     justCompleted,
+    justStarted,
     removing,
     justAdded,
     completionPopup,

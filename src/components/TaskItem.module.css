@@ -3,6 +3,12 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes taskStart {
+  0%   { transform: scale(1);    box-shadow: 0 0 0 0px transparent; }
+  35%  { transform: scale(1.02); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 18%, transparent); }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0px transparent; }
+}
+
 
 /* ── Container ─────────────────────────────────────────── */
 .container {
@@ -23,7 +29,8 @@
 .container.editing      { cursor: text; }
 .container.isDragging   { opacity: 0.4; }
 .container.done         { opacity: 0.45; }
-.container.inProgress   { border-left: 3px solid var(--accent); }
+.container.inProgress    { border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 4%, var(--bg-card)); }
+.container.isJustStarted { animation: taskStart 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 .container.isRemoving   { opacity: 0; transform: translateX(40px); }
 .container.isDragOver   { 
   background: var(--bg-card-hover); 
