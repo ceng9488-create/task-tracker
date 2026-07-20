@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ANIMATION_DURATION_MS } from "../const/task";
 import type { Category, Filter, Priority, Task } from "../types/task";
 import { useAuth } from "../context/AuthContext";
-import { supabase } from "../lib/supabase";
+import { db } from "../lib/db";
 
 function rowToTask(row: Record<string, unknown>): Task {
   return {
@@ -57,7 +57,7 @@ export function useTasks(filter: Filter) {
     setLoading(true);
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-    supabase
+    db()
       .from("tasks")
       .select("*")
       .eq("in_pool", false)
@@ -80,7 +80,7 @@ export function useTasks(filter: Filter) {
       const maxPosition =
         tasks.length > 0 ? Math.max(...tasks.map((t) => t.position)) : -1;
 
-      const { data, error } = await supabase
+      const { data, error } = await db()
         .from("tasks")
         .insert({
           text: text.trim(),
@@ -123,7 +123,7 @@ export function useTasks(filter: Filter) {
         setTasks((prev) =>
           prev.map((t) => (t.id === id ? { ...t, isInProgress: true } : t)),
         );
-        const { error: startErr } = await supabase.from("tasks").update({ is_in_progress: true }).eq("id", id);
+        const { error: startErr } = await db().from("tasks").update({ is_in_progress: true }).eq("id", id);
         if (startErr) console.error("Failed to save in-progress state:", startErr.message);
       } else {
         // in progress → done
@@ -144,7 +144,7 @@ export function useTasks(filter: Filter) {
             t.id === id ? { ...t, isDone: true, isInProgress: false, completedAt } : t,
           ),
         );
-        const { error: doneErr } = await supabase
+        const { error: doneErr } = await db()
           .from("tasks")
           .update({ is_done: true, is_in_progress: false, completed_at: completedAt })
           .eq("id", id);
@@ -161,20 +161,20 @@ export function useTasks(filter: Filter) {
         previousTasks.filter((task) => task.id !== id),
       );
       setRemoving(null);
-      await supabase.from("tasks").delete().eq("id", id);
+      await db().from("tasks").delete().eq("id", id);
     }, ANIMATION_DURATION_MS.REMOVE_SLIDE_OUT);
   }, []);
 
   const updateTaskText = useCallback(async (id: number, text: string) => {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, text } : t)));
-    await supabase.from("tasks").update({ text }).eq("id", id);
+    await db().from("tasks").update({ text }).eq("id", id);
   }, []);
 
   const reorderedTasks = useCallback(async (newTasks: Task[]) => {
     setTasks(newTasks);
     await Promise.all(
       newTasks.map((task, index) =>
-        supabase.from("tasks").update({ position: index }).eq("id", task.id),
+        db().from("tasks").update({ position: index }).eq("id", task.id),
       ),
     );
   }, []);

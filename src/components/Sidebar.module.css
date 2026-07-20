@@ -1,9 +1,9 @@
 .sidebar {
   width: 220px;
   flex-shrink: 0;
-  height: 100vh;
+  height: calc(100vh - var(--banner-height, 0px));
   position: sticky;
-  top: 0;
+  top: var(--banner-height, 0px);
   background: var(--bg-card);
   border-right: 1px solid var(--border);
   display: flex;

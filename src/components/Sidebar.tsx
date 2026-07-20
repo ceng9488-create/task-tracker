@@ -32,12 +32,12 @@ export function Sidebar({ view, onNavigate }: Props) {
           >
             <Archive size={16} className={styles.navIcon} /> Task Pool
           </div>
-          <div
+          {/* <div
             className={`${styles.navItem} ${view === "pomodoro" ? styles.active : ""}`}
             onClick={() => onNavigate("pomodoro")}
           >
             <Hourglass size={16} className={styles.navIcon} /> Pomodoro
-          </div>
+          </div> */}
           <div
             className={`${styles.navItem} ${view === "history" ? styles.active : ""}`}
             onClick={() => onNavigate("history")}

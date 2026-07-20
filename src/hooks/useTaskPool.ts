@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Category, Priority, Recurring, Task } from "../types/task";
 import { useAuth } from "../context/AuthContext";
-import { supabase } from "../lib/supabase";
+import { db } from "../lib/db";
 
 function rowToTask(row: Record<string, unknown>): Task {
   return {
@@ -32,7 +32,7 @@ export function useTaskPool() {
       return;
     }
     setLoading(true);
-    supabase
+    db()
       .from("tasks")
       .select("*")
       .eq("in_pool", true)
@@ -49,7 +49,7 @@ export function useTaskPool() {
       if (!text.trim() || !session) return;
       const maxPosition = tasks.length > 0 ? Math.max(...tasks.map((t) => t.position)) : -1;
 
-      const { data, error } = await supabase
+      const { data, error } = await db()
         .from("tasks")
         .insert({
           text: text.trim(),
@@ -73,17 +73,17 @@ export function useTaskPool() {
 
   const removeTask = useCallback(async (id: number) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
-    await supabase.from("tasks").delete().eq("id", id);
+    await db().from("tasks").delete().eq("id", id);
   }, []);
 
   const scheduleForToday = useCallback(async (id: number) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
-    await supabase.from("tasks").update({ in_pool: false }).eq("id", id);
+    await db().from("tasks").update({ in_pool: false }).eq("id", id);
   }, []);
 
   const updateTaskText = useCallback(async (id: number, text: string) => {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, text } : t)));
-    await supabase.from("tasks").update({ text }).eq("id", id);
+    await db().from("tasks").update({ text }).eq("id", id);
   }, []);
 
   return { tasks, loading, addTask, removeTask, scheduleForToday, updateTaskText };

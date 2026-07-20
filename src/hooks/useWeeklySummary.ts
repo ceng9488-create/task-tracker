@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { db } from "../lib/db";
 import { useAuth } from "../context/AuthContext";
 import type { DayHistory } from "../types/task";
 
@@ -31,7 +31,7 @@ export function useWeeklySummary(weekOffset: number = 0) {
     const from = new Date(monday + "T00:00:00+08:00").toISOString();
     const to   = new Date(sunday + "T23:59:59+08:00").toISOString();
 
-    const completedQ = supabase
+    const completedQ = db()
       .from("tasks")
       .select("id, text, priority, category, created_at, completed_at")
       .eq("in_pool", false)
@@ -39,7 +39,7 @@ export function useWeeklySummary(weekOffset: number = 0) {
       .lte("completed_at", to)
       .order("completed_at", { ascending: false });
 
-    const pendingQ = supabase
+    const pendingQ = db()
       .from("tasks")
       .select("id, text, priority, category, created_at, completed_at")
       .eq("in_pool", false)

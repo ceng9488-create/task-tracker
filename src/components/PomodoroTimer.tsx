@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { usePomodoroTimer } from '../hooks/usePomodoroTimer';
 import { useAuth } from '../context/AuthContext';
-import { supabase } from '../lib/supabase';
+import { db } from '../lib/db';
 import styles from './PomodoroTimer.module.css';
 
 interface ActiveTask { id: number; text: string; }
@@ -17,7 +17,7 @@ export function PomodoroTimer() {
     if (!session) return;
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-    supabase
+    db()
       .from('tasks')
       .select('id, text')
       .eq('is_done', false)

@@ -17,7 +17,7 @@ const DEV_EMAIL = import.meta.env.VITE_DEV_EMAIL as string | undefined;
 const DEV_PASSWORD = import.meta.env.VITE_DEV_PASSWORD as string | undefined;
 
 function LoginPage() {
-  const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const { signInWithGoogle, signInWithEmail, signUpWithEmail, enterDemo } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState(DEV_EMAIL ?? "");
   const [password, setPassword] = useState(DEV_PASSWORD ?? "");
@@ -96,6 +96,16 @@ function LoginPage() {
       <button onClick={signInWithGoogle} data-testid="google-signin-btn" className={styles.googleButton}>
         Continue with Google
       </button>
+
+      <button
+        type="button"
+        onClick={enterDemo}
+        data-testid="demo-signin-btn"
+        className={styles.demoButton}
+      >
+        Try the demo — no account needed
+      </button>
+      <p className={styles.demoHint}>Sample data stays in this browser.</p>
 
       <p className={styles.authSwitch}>
         {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}
@@ -257,19 +267,27 @@ function TaskTrackerApp({ onNavigate }: { onNavigate: (view: "tasks" | "history"
   );
 }
 function App() {
-  const { session, loading } = useAuth();
+  const { session, loading, isDemo, signOut } = useAuth();
   const [view, setView] = useState<"tasks" | "history" | "pomodoro" | "pool">("tasks");
 
   if (loading) return <div className={styles.loading}>Loading...</div>;
   if (!session) return <LoginPage />;
   return (
-    <div className={styles.layout}>
-      <Sidebar view={view} onNavigate={setView} />
-      <div className={styles.main}>
-        {view === "tasks" ? <TaskTrackerApp onNavigate={setView} />
-          : view === "pool" ? <TaskPoolPage />
-          : view === "pomodoro" ? <PomodoroPage />
-          : <WeeklySummary />}
+    <div className={styles.shell} data-demo={isDemo || undefined}>
+      {isDemo && (
+        <div className={styles.demoBanner}>
+          <span>Demo mode — sample data, stored only in this browser.</span>
+          <button className={styles.demoBannerExit} onClick={signOut}>Exit demo</button>
+        </div>
+      )}
+      <div className={styles.layout}>
+        <Sidebar view={view} onNavigate={setView} />
+        <div className={styles.main}>
+          {view === "tasks" ? <TaskTrackerApp onNavigate={setView} />
+            : view === "pool" ? <TaskPoolPage />
+            : view === "pomodoro" ? <PomodoroPage />
+            : <WeeklySummary />}
+        </div>
       </div>
     </div>
   );

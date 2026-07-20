@@ -1,6 +1,16 @@
+.shell {
+  min-height: 100vh;
+  background: var(--bg-app);
+}
+
+/* Height reserved by the global demo banner; the sidebar offsets itself by it. */
+.shell[data-demo] {
+  --banner-height: 37px;
+}
+
 .layout {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--banner-height, 0px));
   background: var(--bg-app);
 }
 
@@ -503,6 +513,56 @@
 
 .googleButton:hover {
   background: var(--bg-card-hover);
+}
+
+.demoButton {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 10px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.demoButton:hover {
+  background: var(--bg-card-hover);
+}
+
+.demoHint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 8px 0 0;
+}
+
+.demoBanner {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+
+.demoBannerExit {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
 }
 
 .authSwitch {
